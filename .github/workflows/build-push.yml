@@ -1,28 +1,48 @@
-name: Build and Push Docker to ACR
+name: Build and Push
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  # Azure Container Registry URL
+  REGISTRY: florabotacr.azurecr.io
+  # Image name (can be just the project name for ACR)
+  IMAGE_NAME: flora-backend
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Login to ACR
-        uses: docker/login-action@v2
+      - name: Log in to Azure Container Registry
+        uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          registry: ${{ env.REGISTRY }}
+          # Ensure you have set these secrets in your GitHub Repo settings
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push
+      # This step handles the lowercasing and tag generation automatically
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./backend
           file: ./backend/Dockerfile
+          context: ./backend
           push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/flora-backend:latest
+          # These outputs come from the 'meta' step above
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
