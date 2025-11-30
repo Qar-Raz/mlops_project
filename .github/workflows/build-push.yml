@@ -1,28 +1,36 @@
-name: Build and Push Docker to ACR
+name: Build and Push
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Login to ACR
-        uses: docker/login-action@v2
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Generate lowercase tag
+        run: |
+          IMAGE="ghcr.io/${{ github.repository }}/flora-backend"
+          IMAGE=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${IMAGE}:latest" >> $GITHUB_ENV
+
+      - name: Debug Tag
+        run: echo "Tag -> ${{ env.IMAGE_NAME }}"
+
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./backend
           file: ./backend/Dockerfile
+          context: ./backend
           push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/flora-backend:latest
+          tags: ${{ env.IMAGE_NAME }}
