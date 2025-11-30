@@ -1,4 +1,4 @@
-name: Build and Push Docker to ACR
+name: Build and Push Docker to GHCR
 
 on:
   push:
@@ -7,22 +7,36 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_REPO: ${{ github.repository }}   # "owner/repo"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Login to ACR
+      - name: Login to GHCR
         uses: docker/login-action@v2
         with:
-          registry: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}   # or use ${{ github.actor }} if appropriate
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Build and push
+      - name: Compute lowercase image name
+        run: |
+          # build full registry-qualified name and lowercase it
+          FULL="${REGISTRY}/${IMAGE_REPO}/flora-backend"
+          LCASE=$(echo "$FULL" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${LCASE}:latest" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Show tag (debug)
+        run: echo "Will push image: $IMAGE_NAME"
+
+      - name: Build and push with Buildx
         uses: docker/build-push-action@v4
         with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/flora-backend:latest
+          tags: ${{ env.IMAGE_NAME }}
