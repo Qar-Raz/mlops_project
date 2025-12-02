@@ -24,7 +24,7 @@ class InputGuardrails:
         
         # Prompt injection patterns
         self.injection_patterns = [
-            r'ignore.*(?:previous|all).*instructions?',
+            r'ignore previous instructions?',
             r'disregard.*(?:above|instructions?)',
             r'forget.*instructions?',
             r'you are now',
