@@ -40,4 +40,7 @@ This document tracks the individual contributions of each team member to the Flo
 
 ### 5. AnushaRandhawa
 - Prometheus and Grafana for M1
+- SECURITY.md describing prompt injection defenses and data privacy.
+- Document guardrails that enforce AI guidelines.
+- EVALUATION.md for evaluation methodology, prompt comparisons, and insights.
 - Prometheus and Grafana for M2 (PENDING)
