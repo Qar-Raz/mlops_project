@@ -8,7 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
-    # Pointing to main_lite instead of main
+    environment:
+      - MODEL_DIR=/app/backend/models
     command: uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 
   prometheus:
@@ -18,6 +19,13 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
     depends_on:
       - app
 
@@ -28,6 +36,11 @@ services:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
 
@@ -40,7 +53,10 @@ services:
       - "7000:7000"
     volumes:
       - ./experiments:/app/experiments
-    # Using the lite requirements here too
     command: >
       sh -c "pip install -r backend/requirements-lite.txt && 
              python experiments/generate_drift_report.py"
+
+volumes:
+  prometheus_data:
+  grafana_data:

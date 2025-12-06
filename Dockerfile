@@ -39,7 +39,8 @@ COPY ./class_names.txt .
 
 EXPOSE 8000
 
-HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
+# Healthcheck disabled - not needed for metrics monitoring
+# HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
 
 # Point to the real app
 CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
