@@ -415,6 +415,13 @@ Comprehensive data quality metrics including missing values, data types, and con
 ### 4. Evidently AI Dashboard 5/12/2025
 <img width="1280" height="660" alt="image" src="https://github.com/user-attachments/assets/caedc215-181a-401a-ae13-e9d95288c63a" />
 
+### 5. MLFLOW 
+<img width="1920" height="955" alt="Screenshot 2025-12-06 at 3 58 27 PM" src="https://github.com/user-attachments/assets/bcfc1ca9-1eb2-4939-9e3c-af9f261c30be" />
+
+Charts for mlflow:
+
+<img width="1918" height="947" alt="Screenshot 2025-12-06 at 3 57 50 PM" src="https://github.com/user-attachments/assets/61880189-17f2-4eff-a89a-80977fcb78c0" />
+<img width="1920" height="439" alt="Screenshot 2025-12-06 at 3 58 09 PM" src="https://github.com/user-attachments/assets/ab6ae016-f782-4997-a476-912808fe3ec8" />
 
 ### Summary of Monitoring Results
 
@@ -425,6 +432,11 @@ Comprehensive data quality metrics including missing values, data types, and con
 - 🔄 **Automated Reports:** Regular reports generated for model health assessment
 
 ---
+
+
+
+
+
 
 ## 🔄 CI/CD Pipeline
 
@@ -856,164 +868,12 @@ Included in `.github/workflows/ci.yml`:
 * RAG toolchains
 * A/B testing dashboard
 
-```mermaid
-flowchart TD
-    %% Nodes
-    subgraph Frontend_Layer ["Frontend Layer (Vercel)"]
-        Browser(("User Browser"))
-        UI["Next.js/React App"]
-    end
+dataflow diagram:
+<img width="2026" height="2581" alt="dataflow diagram" src="https://github.com/user-attachments/assets/8d484da1-42ba-4513-9d4e-c905a96e2661" />
 
-    subgraph Compute_Layer ["Compute Layer (Microsoft Azure)"]
-        LB["Azure Load Balancer"]
-        
-        subgraph Backend_Container ["Backend Container (Docker)"]
-            FastAPI["FastAPI Server<br/>(app.py)"]
-            RAG["RAG Pipeline<br/>(pipeline.py)"]
-            LocalStore[("Local Vector Index")]
-        end
-    end
+architecture diagram;
+    <img width="4144" height="4932" alt="DIAGRAM 1" src="https://github.com/user-attachments/assets/2b0f234c-585e-4f56-9f82-d80cf74efd44" />
 
-    subgraph Storage_Layer ["Storage Layer (AWS S3)"]
-        S3Buck[("S3 Bucket: mlopsmodel")]
-        Weights["Model Weights<br/>.bin / .onnx"]
-        RawData["Raw Documents"]
-    end
-
-    %% Edge Connections
-    Browser <-->|HTTPS /chat| UI
-    UI <-->|POST /predict| LB
-    LB <-->|Traffic| FastAPI
-    
-    %% Initialization Flow
-    FastAPI -- "1. Startup (download_models.py)" --> S3Buck
-    S3Buck -- "Download Models" --> Weights
-    Weights -.->|Load into RAM| RAG
-    
-    %% RAG Flow
-    FastAPI -- "2. User Query" --> RAG
-    RAG -- "3. Query Index" --> LocalStore
-    RAG -- "4. Generate Answer" --> FastAPI
-    
-    %% Ingestion Flow (Background)
-    RawData -.->|Ingest.py Process| LocalStore
-
-    %% Styling
-    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:white;
-    classDef azure fill:#007FFF,stroke:#003366,stroke-width:2px,color:white;
-    classDef vercel fill:#000000,stroke:#FFFFFF,stroke-width:2px,color:white;
-    
-    class S3Buck,Weights,RawData aws;
-    class LB,FastAPI,RAG,LocalStore azure;
-    class UI,Browser vercel;
-```
-
-
-```mermaid
-flowchart TD
-    %% =================================================================
-    %% STYLING
-    %% =================================================================
-    classDef user fill:#212121,stroke:#000,stroke-width:2px,color:#fff
-    classDef api fill:#d1c4e9,stroke:#512da8,stroke-width:2px,color:#000
-    classDef vision fill:#bbdefb,stroke:#0d47a1,stroke-width:2px,color:#000
-    classDef rag fill:#ffecb3,stroke:#ff6f00,stroke-width:2px,color:#000
-    classDef llm fill:#c8e6c9,stroke:#1b5e20,stroke-width:2px,color:#000
-    classDef storage fill:#cfd8dc,stroke:#455a64,stroke-width:2px,color:#000
-
-    %% =================================================================
-    %% 1. ENTRY POINT
-    %% =================================================================
-    User((User Client)) -- "POST /predict (Image)" --> API[FastAPI Controller]
-    
-    subgraph System_Core ["🧠 Flora-Bot Production System"]
-        
-        %% =================================================================
-        %% 2. VISION PIPELINE (Diagnosis)
-        %% =================================================================
-        subgraph Vision_Module ["👁️ Vision Module (Disease Detection)"]
-            PreProc["Image Preprocessing<br/>(Resize/Normalize)"]
-            ONNX_Model[["ONNX Runtime Engine<br/>(ResNet/Swin Optimized)"]]
-            PostProc["Softmax & Confidence"]
-            
-            DiagnosisData[("Diagnosis Output:<br/>Class: Tomato_Early_Blight<br/>Conf: 98.5%")]
-        end
-
-        %% =================================================================
-        %% 3. RAG PIPELINE (Context Retrieval)
-        %% =================================================================
-        subgraph RAG_Module ["📚 RAG Module (Smart Retrieval)"]
-            direction TB
-            
-            QueryGen["Query Generation<br/>'{Diagnosis} treatment'"]
-            
-            FilterStrat{"Strategy: Metadata Filtering"}
-            
-            VectorDB[("ChromaDB Store<br/>(800-char Chunks)")]
-            
-            Fallback{"Fallback Logic"}
-            
-            RetrievedContext["Context Window:<br/>Top-2 Documents<br/>(Filtered by Disease)"]
-        end
-
-        %% =================================================================
-        %% 4. GENERATION PIPELINE (LLM)
-        %% =================================================================
-        subgraph LLM_Module ["🤖 Generation Module (TinyLlama)"]
-            Strategy_FewShot["Strategy: Few-Shot Prompting<br/>(Injecting 2 Static Examples)"]
-            
-            PromptEng["Prompt Construction<br/>(System + Context + Diagnosis)"]
-            
-            GGUF_Engine[["Llama.cpp Engine<br/>(Quantized CPU Inference)"]]
-            
-            ResponseGen["Final JSON Response"]
-        end
-
-        %% =================================================================
-        %% FLOW LOGIC
-        %% =================================================================
-        
-        %% API -> Vision
-        API -->|Raw Bytes| PreProc
-        PreProc -->|Tensors| ONNX_Model
-        ONNX_Model -->|Logits| PostProc
-        PostProc --> DiagnosisData
-
-        %% Vision -> RAG (The Handshake)
-        DiagnosisData -- "1. Pass Diagnosis" --> QueryGen
-        QueryGen -- "2. Search Query" --> FilterStrat
-        
-        %% RAG Logic
-        FilterStrat -- "Try: filter={'disease': diagnosis}" --> VectorDB
-        VectorDB -->|Return Results| Fallback
-        
-        Fallback -- "If Docs Found" --> RetrievedContext
-        Fallback -- "If Empty (Relax Filter)" --> VectorDB_Retry[("Retry: Vector Search Only")]
-        VectorDB_Retry --> RetrievedContext
-
-        %% RAG + Vision -> LLM
-        RetrievedContext -- "3. Inject Knowledge" --> PromptEng
-        DiagnosisData -- "4. Inject Disease Name" --> PromptEng
-        Strategy_FewShot -- "5. Inject Examples" --> PromptEng
-        
-        PromptEng -->|Full Context Window| GGUF_Engine
-        GGUF_Engine -->|Token Stream| ResponseGen
-    end
-
-    %% =================================================================
-    %% OUTPUT
-    %% =================================================================
-    %% FIXED LINE: Added quotes around the JSON structure
-    ResponseGen -- "JSON: {diagnosis, explanation, context}" --> API
-    API -->|HTTP 200| User
-
-    %% Apply Styles
-    class User user
-    class API api
-    class PreProc,ONNX_Model,PostProc,DiagnosisData vision
-    class QueryGen,FilterStrat,VectorDB,Fallback,RetrievedContext,VectorDB_Retry rag
-    class Strategy_FewShot,PromptEng,GGUF_Engine,ResponseGen llm
-```
 ---
 
 last update on 30th october 2025

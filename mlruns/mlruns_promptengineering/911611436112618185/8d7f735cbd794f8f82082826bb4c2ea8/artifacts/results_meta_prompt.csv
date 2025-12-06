@@ -1,0 +1,117 @@
+question,context,ideal_answer,generated_answer,rouge_l,human_score
+My apple tree leaves have olive-green spots that are turning brown. What is this and how do I treat it?,Apple___Apple_scab,"This sounds like Apple Scab. To treat it, remove and destroy fallen leaves to reduce overwintering spores. Apply fungicides like captan or sulfur early in the season, and consider planting resistant apple varieties.","Apple scab is a disease caused by the fungus Alternaria alternata. The disease causes brown spots on the leaves and stems, which eventually cause the leaves to die. Treatment for apple scab depends on the severity of the symptoms. If the symptoms are mild, you can use a fungicide spray. If the spots are severe or if the leaves are already brown, you may need to remove the infected foliage and spray it with fungicide or use a slow-release spray of sulfuric acid. If you don't have access to sulfuric acid, you can spray the leaves with a combination of copper fungicide and sulfur",0.14388489208633093,
+"I see dark, concentric rings on the lower leaves of my tomato plants. The leaves are turning yellow. What should I do?",Tomato___Early_blight,"These are symptoms of Tomato Early Blight. You should improve air circulation, avoid overhead watering, and apply a copper-based fungicide or chlorothalonil. Remove infected leaves immediately.","Thank you for your question about the Tomato disease Early Blight.
+
+Diagnosis: Early blight is caused by the fungal pathogen Alternaria alternata. The disease is spread by infected tomato plants, soil or seed, and can appear in all stages of the plant. The disease is typically detected in the lower leaves and can cause a yellowing, death of the leaves, or both.
+
+Actionable Step:
+
+1. Disinfect the affected leaves with 10% bleach or soap. Do not use harsh detergents, as they may cause further damage to the leaves.
+2. Remove the diseased leaves and dispose of them properly.",0.128,
+How can I prevent Corn Common Rust from affecting my crop?,Corn_(maize)___Common_rust_,"To prevent Corn Common Rust, plant resistant corn hybrids. Fungicides can be effective if applied early when pustules first appear. Rotate crops and manage weeds to reduce disease pressure.","Corn Common Rust is caused by the fungus _______, which can spread through infected plant debris. To prevent the disease, here are some tips:
+1. Remove any infected plant debris, such as corn silage, straw, and leaves, from fields as soon as possible to prevent the disease from spreading.
+2. Avoid planting fields near corn silage fields, as this may spread the disease.
+3. Use resistant corn varieties, or a combination of corn varieties and cover crops, as the fungus may also affect these crops.
+
+4. Use fungicides containing sulfonylurea, which are effective against corn rust, but",0.128,
+"My grape leaves have small, reddish-brown spots that are enlarging. What disease is this?",Grape___Black_rot,"This is likely Grape Black Rot. It causes reddish-brown spots on leaves and can shrivel the fruit into hard, black mummies. Sanitation (removing mummies) and fungicide sprays are key control measures.","Grape___Black_rot
+Diseaise Name: Grape___Black_rot
+Actionable Step: Scouting and identifying the affected leaves.
+
+- Inspection: Scan the plants for signs of the disease, such as mushy or swollen leaves.
+- Identification: Grape___Black_rot is characterized by small, redish brown spots on the undersurface of the leaves.
+
+Outcome: Grape___Black_rot is caused by a fungus (Puccinia graecanensis). Prevention: Regularly inspect the plants for signs of rot and remove damaged leaves immediately. Resistance: Varieties with robust root systems and",0.17857142857142858,
+What are the signs of Late Blight on potatoes?,Potato___Late_blight,"Potato Late Blight appears as water-soaked, dark green to black lesions on leaves, often with a white fungal growth on the underside in humid weather. Tubers may develop a firm, brown decay.","Late Blight is a fungal disease that affects potato crops. The most common symptom is a yellowing of the leaves, followed by the death of the plant. Other symptoms may include wilting and root rot. The disease spreads quickly, and it's a good idea to treat plants as soon as possible. Here are some actionable steps:
+
+1. Sanitize the affected areas with a bleach solution (1 part bleach to 3 parts water).
+2. Clean the soil in the infected areas with a solution of hydrogen peroxide and water.
+3. Plant resistant varieties or hybrids.
+4. Follow standard agricultural practices, which include",0.11851851851851852,
+My strawberry leaves have purple spots with white centers. Is this serious?,Strawberry___Leaf_scorch,"This is Strawberry Leaf Scorch. It is a fungal disease. While it can weaken plants, it is often manageable. Remove infected leaves, ensure good drainage, and apply appropriate fungicides if the infection is severe.","Strawberry leaf scorch is caused by a fungal disease, Streptomycinia cepacia. The disease is characterized by a purple spot, with a white center, and the plant may drop. The disease can be serious if the plant is infected for a long time. The fungus thrives in high humidity, high temperature and poor soil drainage. The best treatment is to remove infected leaves, then spray fungicide to kill the fungus. If the disease persists, the plant may need to be destroyed.
+
+Actionable Step: Remove infected leaves and spray fungicide to kill the fungus.
+
+OUTPUT FORMAT:",0.265625,
+My peach tree leaves have small water-soaked spots that are turning into holes. What is happening?,Peach___Bacterial_spot,"This is likely Bacterial Spot. It causes 'shot-hole' symptoms on leaves. To manage it, select resistant varieties, avoid excessive nitrogen fertilization, and use copper sprays during the dormant season.","Thank you for your question. Peach bacterial spot is a common disease of peach trees that usually starts on the leaves and spreads to the petioles and stems. The disease causes wilting of affected leaves, small water-soaked spots on the leaves, and eventually the plant wilts. The bacteria that cause peach bacterial spot are ureaplasmata, which are non-motile bacteria that infect the plant through the soil or water. The disease is typically caused by the ureaplasmata ____, but other species may be present.
+
+Actionable Step:
+- Sanitize the affected plant parts to prevent bacterial spread by",0.11111111111111112,
+I found bright orange spots on the upper surface of my apple leaves. What is it?,Apple___Cedar_apple_rust,This is Cedar Apple Rust. It requires both apple and juniper/cedar trees to complete its life cycle. Remove nearby galls from juniper trees and apply fungicides like myclobutanil during the spring.,"Thank you for your question. Apple rust, also known as rust or rust disease, is a fungal infection that is caused by the fungus Puccinia sorghi. It usually infests the leaves, stems, and fruits, leading to a yellowing or brown appearance. The disease is most often found on apple trees, especially the cultivar, Malus 'Sulphuradoidis'.
+
+Actionable Step:
+1. Use a clean, sterile sponge or cloth to thoroughly wipe the affected surfaces.
+2. Wipe the leaves with a damp cloth or sponge to remove any excess dirt or debris.
+3. Apply a fungic",0.12903225806451613,
+There is a white powdery coating on my cherry tree leaves. How do I fix it?,Cherry_(including_sour)___Powdery_mildew,This is Cherry Powdery Mildew. Prune trees to improve air circulation and sunlight penetration. Apply sulfur or other labeled fungicides at the first sign of disease.,"Dear [User],
+
+We are Dr. Flora, an expert Plant Pathologist with 20 years of experience in agricultural diagnostiics.
+
+Powdery mildew is a disease caused by the fungus Fusarium oxysporum. The disease is commonly found on fruits, vegetables, and ornamental plants. It produces a powdery or chalky white coat on leaves, stems, and fruits.
+
+Here are some treatment options:
+
+1. Physical treatment: Prune the tree to remove infected leaves or branches.
+
+2. Sanitation: Remove all infected leaves, branches, and fruiting bodies from the plant.
+
+3",0.12727272727272726,
+"My corn leaves have long, grayish-green elliptical lesions. Is this blight?",Corn_(maize)___Northern_Leaf_Blight,"Yes, this describes Northern Corn Leaf Blight. Use resistant hybrids and practice crop rotation. Fungicides may be necessary if the disease appears early in the season.","Corn Leaf Blight (CLB) is a common leaf blight caused by the fungus Verticillium Wilt Fungus (VWF) and is present in warm temperate and tropical regions. CLB affects all corn varieties and is not a significant cause of yield reduction.
+
+1. Treatment:
+   - Spray with copper sulfate, 0.1% solution
+   - Apply sulfur on the affected leaves 1-2 times per week
+
+2. Prevention:
+   - Rotate corn varieties to avoid the same soil-borne fungus
+   - Remove infected plant parts
+   - Clean and sanitize gardening",0.11320754716981132,
+My grape leaves have a tiger-stripe pattern and the berries are spotting. What is this?,Grape___Esca_(Black_Measles),"This is Esca (Black Measles), a complex fungal trunk disease. There is no cure for infected vines. Prevent it by protecting pruning wounds and removing infected wood from the vineyard.","Hi there, thanks for reaching out! Based on your provided context, this is Black Measles, commonly known as Grape___Esca. This is a viral disease that attacks the vascular system of the plant, causing the berries to develop a tiger-striped pattern. The leaves will begin to turn brown and die, with symptoms worsening over time.
+
+If you want to prevent this disease, you can:
+
+- Use resistant varieties: Look for varieties that are known to be resistant to this disease, or select varieties that are already on your farm.
+- Sanitation: Ensure your soil is free from debris, and that your garden is well",0.12030075187969923,
+My orange tree leaves have yellowing veins and blotchy mottling. The fruit is small and lopsided.,Orange___Haunglongbing_(Citrus_greening),This is likely Citrus Greening (Huanglongbing). It is a serious bacterial disease spread by psyllids. There is no cure for infected vines. Prevent it by protecting pruning wounds and removing infected wood from the vineyard.,"Hello, I am Dr. Flora, a Plant Pathologist. I diagnose and advise about plant diseases.
+
+Cause: This disease is caused by the bacteria Huanglongbing (HLB) which is spread by the bite of the Asian Citrus Psyllid. Symptoms are similar to citrus greening, and the disease can progress slowly.
+
+Cure: The best treatment for citrus greening is to spray with fungicides. For orangethe tree, the fungicide you can use is Trichoderma ________. This fungi is native to citrus and can be used on citrus trees.
+
+Prevention: Citrus trees are sus",0.16260162601626016,
+Small water-soaked spots are appearing on my bell pepper leaves and turning brown.,"Pepper,_bell___Bacterial_spot","This is Bacterial Spot. It spreads in warm, wet weather. Use copper sprays, avoid overhead irrigation, and use disease-free seeds or transplants.","Bacterial spot disease is a common disease of pepper plants caused by the bacterium Pseudomonas syringae. It is characterized by water-soaked, circular, black to dark brown spots on the leaves, with the center being the most damaged and with a dark brown, blackish or grayish color. The spots are usually found on the lower leaves, but can also be found on the upper leaves, especially in the leaf axils, and sometimes on the stems. Bacterial spot disease is highly susceptible to fungicides, and prevention can be achieved by the use of fungicides. In most cases, the disease can be controlled by spraying fungicides",0.11023622047244094,
+"My potato leaves have dark brown spots with concentric rings, like a target.",Potato___Early_blight,This is Potato Early Blight. It typically affects older leaves first. Maintain plant vigor through proper fertilization and apply fungicides like mancozeb or chlorothalonil.,"Early blight is a fungal disease of potato plants caused by the fungus _[Fungus Name]_ and affects early, juvenile leaves. It is caused by the following symptoms:
+
+- Dark brown spots with concentric rings
+- Early blight is caused by a fungus called _[Fungus Name]_.
+
+- Causes: It is caused by the fungus _[Fungus Name]_.
+
+- Prevention: Clean and dry leaves, and avoid overcrowding.
+
+- Treatment: Sanitation (remove diseased leaves), application of fungicide (10-15 drops per liter of water).",0.1616161616161616,
+White powdery spots are covering my squash leaves and stems.,Squash___Powdery_mildew,"This is Squash Powdery Mildew. It thrives in warm, dry conditions. Plant resistant varieties, ensure good air flow, and use fungicides like neem oil or sulfur.","Mildew is a fungal disease that can infest your crops, especially during periods of moisture. To control mildew, use a fungicide such as Squash Dust. Spray it on the affected areas with a fine mist. Mildew can also be prevented by removing any moisture from the leaves and stem. Watering them too much can also cause mildew. Keep a distance between plants to avoid contamination.
+
+Diagnosis: Mildew
+Advice: Spray Squash Dust on affected areas.
+
+Outcome: User feels relieved with the actionable tips provided.",0.07339449541284404,
+My tomato leaves have small circular spots with dark borders and gray centers.,Tomato___Septoria_leaf_spot,"This is Septoria Leaf Spot. It is very common. Remove lower infected leaves, mulch around the base of the plant to prevent soil splash, and apply fungicides.","Septoia leaf spot is a common fungal disease of tomato. It affects the leaves by causing circular to oval-shaped spots, and the disease can cause yellowing of the leaves. The spots are usually dark brown or black, with gray or white centers. The growth is stunted or reduced, and leaves may die. The disease is most common in temperate regions. Prevention of Septoia leaf spot is by sanitation of the plant, applying fungicides and preventing moist conditions. Treatment may include fungicide applications. The disease may be resistant to fungicides, and you should be aware of this. Actionable steps to prevent or treat Septoia leaf",0.16666666666666669,
+The leaves on my tomato plant are curling upward and turning yellow at the edges.,Tomato___Tomato_Yellow_Leaf_Curl_Virus,"This is Tomato Yellow Leaf Curl Virus, transmitted by whiteflies. Remove and destroy infected plants immediately. Control weeds and use reflective mulches to repel whiteflies.","Hi there. Tomato yellow leaf curl virus is a serious disease that can infect the youngest leaves of tomatoes. Symptoms include curled, yellow-orange, and white leaves, curling upward, and turning yellow at the edges. The disease is spread by infected pollen, wind, and water, and can be contracted from plants in the same garden.
+
+Actionable Steps:
+
+1. Sanitize and clean all gardening tools and equipment.
+2. Use a sturdy tray to transport your plants to the nursery.
+3. Clean your tomato plants regularly and remove infected leaves, stems, and tubers.
+4. Use",0.1864406779661017,
+I see tiny yellow speckles on my tomato leaves and some fine webbing.,Tomato___Spider_mites Two-spotted_spider_mite,"These are Spider Mites (Two-spotted spider mite). They thrive in hot, dry weather. Wash them off with a strong stream of water or use insecticidal soap or neem oil.","Based on the provided context, the disease is Two-spotted Spider Mites. Here are the actionable steps for treatment:
+
+1. Clean your planting area and dispose of infected leaves.
+2. Immediately remove all affected leaves and disinfect the planting area with water and bleach (100% water to 1 part bleach to 100 parts water).
+3. Apply a 10-10-10 solution of chlorine bleach (10% chlorine bleach), water (10% chlorine bleach), and soap (10% soap), at a rate of 1 gallon of bleach to",0.15789473684210525,
+"My tomato plant leaves are bright green, firm, and look perfect. Is it sick?",Tomato___healthy,"No, your plant appears healthy! Keep up the good work with watering and care.","Tomato is a common plant disease, causing yellowing of leaves, stunted growth, and blossom end rot. It can be caused by various factors such as overwatering, improper fertilization, poor soil quality, or pests. To identify the disease, check for symptoms such as yellowing leaves, discoloration, and wilting. If the symptoms persist for more than a few days, seek the advice of a plant pathologist. Adopting preventive measures like regular watering, balanced fertilization, and proper soil management can help prevent the disease. Follow standard agricultural practices such as sanitation, resistant varieties, and crop rotation to maintain healthy plants.",0.07207207207207207,
+"My soybean crop looks uniform, green, and vigorous. Do I need to treat it?",Soybean___healthy,"No, the crop appears healthy. Continue monitoring for pests or diseases, but no treatment is needed right now.","Hello, thank you for your query. Based on the provided context, the plant looks healthy and is not showing any signs of disease. Therefore, you do not need to treat it with any fungicide. Remember that fungicide should be used only in cases of disease outbreaks, such as drought stress, pests, and diseases. You can apply an appropriate fungicide according to the crop's type, severity of the disease, and the surrounding soil condition. As a general rule, it is recommended to follow the following steps for disease prevention and control:
+
+1. Clean the crops, including the irrigation system, with a high-quality solution.
+2. San",0.08064516129032259,

@@ -1,0 +1,14 @@
+artifact_uri: file:///kaggle/working/mlruns/842221681664835129/4fe67d378d7e4d23aa6fcb81d5b6837c/artifacts
+end_time: 1764852565246
+entry_point_name: ''
+experiment_id: '842221681664835129'
+lifecycle_stage: active
+run_id: 4fe67d378d7e4d23aa6fcb81d5b6837c
+run_name: swin_cv_model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764849334888
+status: 3
+tags: []
+user_id: root

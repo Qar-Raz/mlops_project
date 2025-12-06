@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/qamar/Desktop/mlops_project/mlruns/911611436112618185/0cda6502a02f4e6eb0e47b8b35c2badb/artifacts
+end_time: 1764603219099
+entry_point_name: ''
+experiment_id: '911611436112618185'
+lifecycle_stage: active
+run_id: 0cda6502a02f4e6eb0e47b8b35c2badb
+run_name: eval_few_shot
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764603172083
+status: 3
+tags: []
+user_id: qamar
