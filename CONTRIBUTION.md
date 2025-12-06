@@ -26,8 +26,10 @@ This document tracks the individual contributions of each team member to the Flo
 
 
 ### 3. ZainSharjeel
-- Evidently (Is not done Properly at all !)
-- GuardRails (NOT DONE IS STILL PENDING !)
+- Evidently
+- GuardRails 
+- Prometheus for M1
+- Grafana for M1
 
 ### 4. AbdullahKhalid-projects
 - CV MODEL Training
