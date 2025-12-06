@@ -1,7 +1,24 @@
 global:
-  scrape_interval: 5s
+  scrape_interval: 15s # Scrape metrics every 15 seconds
+  evaluation_interval: 15s # Evaluate rules every 15 seconds
+  external_labels:
+    monitor: 'flora-bot-monitor'
 
+# Scrape configurations
 scrape_configs:
-  - job_name: 'fastapi_app'
+  # FastAPI application metrics
+  - job_name: 'fastapi-app'
     static_configs:
       - targets: ['app:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# Optional: Alerting rules (you can expand this later)
+# rule_files:
+#   - 'alerts.yml'
