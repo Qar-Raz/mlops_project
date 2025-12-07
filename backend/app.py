@@ -12,7 +12,7 @@ from transformers import (
     AutoImageProcessor,
     AutoModelForImageClassification,
 )
-#from optimum.onnxruntime import ORTModelForImageClassification
+from optimum.onnxruntime import ORTModelForImageClassification
 from llama_cpp import Llama
 
 
@@ -78,11 +78,11 @@ async def startup_event():
     print("⚙️ Initializing Free Tier Mode (CPU)...")
 
     # 1. Load Computer Vision Model (Prefer ONNX)
-#    if os.path.exists(ONNX_DIR):
-#        print("🚀 Loading ONNX Optimized CV Model...")
-#        sys_comps["cv_model"] = ORTModelForImageClassification.from_pretrained(ONNX_DIR)
-#        sys_comps["cv_proc"] = AutoImageProcessor.from_pretrained(ONNX_DIR)
-    if os.path.exists(CV_DIR):
+    if os.path.exists(ONNX_DIR):
+        print("🚀 Loading ONNX Optimized CV Model...")
+        sys_comps["cv_model"] = ORTModelForImageClassification.from_pretrained(ONNX_DIR)
+        sys_comps["cv_proc"] = AutoImageProcessor.from_pretrained(ONNX_DIR)
+    elif os.path.exists(CV_DIR):
         print("⚠️ ONNX model not found. Loading standard PyTorch model...")
         sys_comps["cv_model"] = AutoModelForImageClassification.from_pretrained(CV_DIR)
         sys_comps["cv_proc"] = AutoImageProcessor.from_pretrained(CV_DIR)

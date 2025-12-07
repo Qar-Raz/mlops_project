@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   app:
@@ -8,8 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
-    environment:
-      - MODEL_DIR=/app/backend/models
+    
     command: uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 
   prometheus:
