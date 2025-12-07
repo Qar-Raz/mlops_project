@@ -1,14 +1,14 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.2.0+cpu
-torchvision==0.17.0+cpu
 fastapi
 uvicorn
 python-multipart
 python-dotenv
-boto3
+huggingface-hub
+optimum[onnxruntime]
+transformers
 pillow
-numpy<2
-prometheus-fastapi-instrumentator
-evidently==0.4.0
-pandas
-scikit-learn
+llama-cpp-python
+chromadb
+langchain-community
+sentence-transformers
+better-profanity
+prometheus-client
