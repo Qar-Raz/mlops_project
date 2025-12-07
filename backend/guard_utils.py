@@ -33,13 +33,7 @@ class LightweightGuard:
             "want to die", "kill myself"
         ]
 
-        # 4. Sexual / NSFW
-        self.sexual_words = [
-            "porn", "sex", "nude", "naked", "penis", "vagina", "dick", "cock",
-            "pussy", "horny", "erotic", "xxx", "hentai", "masturbate", "orgasm",
-            "fisting", "orgasm","creampie"
-        ]
-
+     
         # Combine all for the general filter
         all_custom = self.hate_words + self.violence_words + self.self_harm_words + self.sexual_words
         profanity.add_censor_words(all_custom)
