@@ -12,8 +12,8 @@ services:
       - ./models:/app/models
     environment:
       # Pass AWS keys if you need to download models from S3
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_ACCESS_KEY_ID=AKIASUSJEDC6UEALEGPD
+      - AWS_SECRET_ACCESS_KEY=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
     # Correct command using backend.app:app (Not lite)
     command: uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 
@@ -38,9 +38,8 @@ services:
       - prometheus
 
   evidently:
-    build: 
+    build:
       context: .
-      dockerfile: Dockerfile
     container_name: evidently_dashboard
     ports:
       - "7000:7000"
