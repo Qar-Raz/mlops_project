@@ -8,7 +8,13 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
-    # Pointing to main_lite instead of main
+      # We mount models so they persist if needed
+      - ./models:/app/models
+    environment:
+      # Pass AWS keys if you need to download models from S3
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    # Correct command using backend.app:app (Not lite)
     command: uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 
   prometheus:
@@ -40,7 +46,6 @@ services:
       - "7000:7000"
     volumes:
       - ./experiments:/app/experiments
-    # Using the lite requirements here too
-    command: >
-      sh -c "pip install -r backend/requirements-lite.txt && 
-             python experiments/generate_drift_report.py"
+    # FIX: Just run the script. 
+    # The Dockerfile already installed evidently from the main requirements.txt.
+    command: python experiments/generate_drift_report.py

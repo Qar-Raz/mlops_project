@@ -1,3 +1,4 @@
+# --- Core API ---
 fastapi
 uvicorn
 python-multipart
@@ -6,9 +7,27 @@ huggingface-hub
 optimum[onnxruntime]
 transformers
 pillow
-llama-cpp-python
-chromadb
-langchain-community
+
+# --- Machine Learning (Vision) ---
+# We keep numpy<2 to prevent conflicts with Evidently/Pandas
+numpy<2
+torch
+torchvision
+
+# --- LLM & RAG (The Heavy Dependencies) ---
+transformers
 sentence-transformers
-better-profanity
-prometheus-client
+langchain
+langchain-community
+chromadb
+accelerate
+onnxruntime
+# Note: This is the specific library that takes a long time to build
+llama-cpp-python
+
+# --- Monitoring (Milestone 1 D5) ---
+prometheus-fastapi-instrumentator
+# We use 0.4.0 because it supports Python 3.11 but isn't broken like the newest versions
+evidently==0.4.0
+pandas
+scikit-learn
