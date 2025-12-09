@@ -312,7 +312,7 @@ export default function AIAssistantUI() {
             const asstMsg = {
               id: Math.random().toString(36).slice(2),
               role: "assistant",
-              content: data.answer,
+              content: data.answer || "Sorry, I encountered an error.",
               createdAt: new Date().toISOString(),
             }
             const msgs = [...(c.messages || []), asstMsg]
@@ -321,7 +321,7 @@ export default function AIAssistantUI() {
               messages: msgs,
               updatedAt: new Date().toISOString(),
               messageCount: msgs.length,
-              preview: asstMsg.content.slice(0, 80),
+              preview: (asstMsg.content || "").slice(0, 80),
             }
           }),
         )

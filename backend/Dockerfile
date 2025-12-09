@@ -1,40 +1,38 @@
-# Use Python 3.11 slim image for smaller size
+# syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
-# Set working directory
-WORKDIR /app
+WORKDIR /backend
 
-# Install system dependencies required for building llama-cpp-python and other tools
-# build-essential: for gcc/g++ compilers
-# cmake: for building llama.cpp
-# curl: for healthchecks or downloading tools
-# libgl1, libglib2.0-0: required for opencv/image processing libraries
+# 1. System Dependencies (Minimal)
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     curl \
-    libgl1 \
-    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache
+# 2. Python Setup
+RUN pip install --upgrade pip
+
+# 3. Install Torch CPU (Cached)
+# We only need torch (for sentence-transformers), not vision/audio
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+# 4. Install Requirements
 COPY requirements.txt .
+# Filter out torch to prevent redownload, then install deps
+RUN --mount=type=cache,target=/root/.cache/pip \
+    grep -v "torch" requirements.txt > req_clean.txt && \
+    pip install -r req_clean.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir -r requirements.txt
+# 5. Copy Models
+COPY models /backend/models
 
-# Copy the models directory into the container
-COPY models /app/models
+# 6. Env Vars
+ENV MODEL_DIR=/backend/models
 
-# Copy the rest of the application code
+# 7. Copy App
 COPY . .
 
-# Expose the port the app runs on
 EXPOSE 8000
-
-# Define environment variable for Model Directory
-ENV MODEL_DIR=/app/models
-
-# Command to run the application
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

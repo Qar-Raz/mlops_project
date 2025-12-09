@@ -5,10 +5,25 @@ fastapi
 uvicorn
 python-multipart
 python-dotenv
+huggingface-hub
 boto3
+transformers
 pillow
+
+# --- Machine Learning (Vision) ---
 numpy<2
+onnxruntime
+
+# --- LLM & RAG (The Heavy Dependencies) ---
+sentence-transformers
+langchain
+langchain-community
+chromadb
+# Note: This is the specific library that takes a long time to build
+llama-cpp-python
+
+# --- Monitoring ---
 prometheus-fastapi-instrumentator
-evidently==0.4.0
-pandas
-scikit-learn
+
+# --- Guardrails ---
+better_profanity

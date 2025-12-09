@@ -19,7 +19,6 @@ This document tracks the individual contributions of each team member to the Flo
 ### 2. hamza7523
 - Azure Configuration ACR
 - AWS Configuration S3 and EC2
--
 - Documentation for M1
 - README
 - Financially contributed for Cloud Services
