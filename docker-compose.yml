@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build: ./backend
     container_name: fastapi_app
     ports:
       - "8000:8000"
@@ -42,4 +42,5 @@ services:
 volumes:
   prometheus_data:
   grafana_data:
+
 
