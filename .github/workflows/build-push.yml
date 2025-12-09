@@ -43,8 +43,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
             florabotacr.azurecr.io/flora-backend:latest
