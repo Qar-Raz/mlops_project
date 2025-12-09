@@ -18,3 +18,7 @@ python-dotenv
 optimum[onnxruntime]
 llama-cpp-python
 huggingface-hub
+
+prometheus-fastapi-instrumentator
+prometheus-client
+evidently==0.4.0
