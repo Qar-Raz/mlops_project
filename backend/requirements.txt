@@ -1,31 +1,14 @@
-# --- Core API ---
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.2.0+cpu
+torchvision==0.17.0+cpu
 fastapi
 uvicorn
 python-multipart
 python-dotenv
 boto3
 pillow
-
-# --- Machine Learning (Vision) ---
-# We keep numpy<2 to prevent conflicts with Evidently/Pandas
 numpy<2
-torch
-torchvision
-
-# --- LLM & RAG (The Heavy Dependencies) ---
-transformers
-sentence-transformers
-langchain
-langchain-community
-chromadb
-accelerate
-onnxruntime
-# Note: This is the specific library that takes a long time to build
-llama-cpp-python
-
-# --- Monitoring (Milestone 1 D5) ---
 prometheus-fastapi-instrumentator
-# We use 0.4.0 because it supports Python 3.11 but isn't broken like the newest versions
 evidently==0.4.0
 pandas
 scikit-learn
