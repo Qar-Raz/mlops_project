@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MODEL_DIR = os.getenv("MODEL_DIR", ".")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Go up one level to find 'models' (backend/models)
+MODEL_DIR = os.getenv("MODEL_DIR", os.path.join(os.path.dirname(SCRIPT_DIR), "models"))
 CV_DIR = os.path.join(MODEL_DIR, "flora_cv_model")
 ONNX_DIR = os.path.join(MODEL_DIR, "flora_cv_onnx")
 

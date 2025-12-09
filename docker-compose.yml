@@ -2,20 +2,17 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build: ./backend
     container_name: fastapi_app
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app/backend
-      # We mount models so they persist if needed
-      - ./models:/app/models
+      - ./backend:/backend
     environment:
-      # Pass AWS keys if you need to download models from S3
-      - AWS_ACCESS_KEY_ID=AKIASUSJEDC6UEALEGPD
-      - AWS_SECRET_ACCESS_KEY=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
-    # Correct command using backend.app:app (Not lite)
-    command: uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - MODEL_DIR=/backend/models
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
   prometheus:
     image: prom/prometheus:latest
@@ -24,6 +21,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     depends_on:
       - app
 
@@ -32,19 +30,15 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - grafana_data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
 
-  evidently:
-    build:
-      context: .
-    container_name: evidently_dashboard
-    ports:
-      - "7000:7000"
-    volumes:
-      - ./experiments:/app/experiments
-    # FIX: Just run the script. 
-    # The Dockerfile already installed evidently from the main requirements.txt.
-    command: python experiments/generate_drift_report.py
+volumes:
+  prometheus_data:
+  grafana_data:

@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
 WORKDIR /backend
@@ -7,22 +8,22 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     curl \
-    libgl1 \
-    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Python Setup
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --upgrade pip
 
 # 3. Install Torch CPU (Cached)
-RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# We only need torch (for sentence-transformers), not vision/audio
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 # 4. Install Requirements
 COPY requirements.txt .
 # Filter out torch to prevent redownload, then install deps
-RUN grep -v "torch" requirements.txt > req_clean.txt && \
-    pip install --no-cache-dir -r req_clean.txt && \
-    rm -rf /root/.cache/pip
+RUN --mount=type=cache,target=/root/.cache/pip \
+    grep -v "torch" requirements.txt > req_clean.txt && \
+    pip install -r req_clean.txt
 
 # 5. Copy Models
 COPY models /backend/models

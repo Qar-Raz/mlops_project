@@ -18,5 +18,11 @@ coverage.xml
 *.log
 .git
 .mypy_cache
+
+# Exclude development/pipeline scripts to slim down image
+scripts/
+ingest.py
+pipeline.py
 .pytest_cache
 .hypothesi
+scripts/
