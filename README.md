@@ -93,7 +93,7 @@ Built with **Next.js** and **React**, featuring a modern, responsive chat interf
 *(Place UI screenshots here)*
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/c7df4bf8-3e3d-487d-8056-eb297fd2e021" />
 <img width="1919" height="1195" alt="image" src="https://github.com/user-attachments/assets/95e20745-d436-403d-b28c-d413c8c6ab59" />
-<img width="1918" height="1199" alt="image" src="https://github.com/user-attachments/assets/80e7185d-8618-4323-aeb2-d221f9a90e75" />
+<img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/a3f99ac0-abd4-426d-afd3-7a00aae09a5c" />
 
 <br>
 <br>
