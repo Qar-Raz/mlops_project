@@ -6,7 +6,7 @@
 | :---: | --- |
 | ⬜ | **To Do** |
 | 🚧 | **DONE BUT WITH CAVEATS** |
-| ✅ | **Done** |
+| ✅ | **Done** | 
 
 ---
 
@@ -58,11 +58,11 @@
 
 | Status | Task / Requirement | Artifact Location | Notes / Implementation Details |
 | :---: | --- | --- | --- |
-| ⬜ | Track Metrics via Prometheus | Prometheus Config | |
-| ⬜ | Visualize in Grafana | Grafana Dashboard | |
-| ⬜ | **Monitor:** Latency, Token Usage, Cost, Violations | Dashboard | |
-| ⬜ | **Data Drift:** Evidently Dashboard for retrieval corpus | Dashboard | |
-| ⬜ | Add Screenshots/Links to Dashboards | `README.md` | |
+| ✅ | Track Metrics via Prometheus | Prometheus Config | Prometheus configured to scrape LLM API metrics. Tracks request rates and latency. |
+| ✅ | Visualize in Grafana | Grafana Dashboard | Dashboard operational at `localhost:3000`. Visualizes `http_requests_total` and response times. Query: `rate(http_requests_total[5m])`. |
+| ✅ | **Monitor:** Latency, Token Usage, Cost, Violations | Dashboard | Monitoring endpoint `/metrics` exposed. Tracks request latency and total request count via Prometheus instrumentator. |
+| ✅ | **Data Drift:** Evidently Dashboard for retrieval corpus | Dashboard | Dashboard at `localhost:7000`. Detects drift for 50% of features (1 out of 2). Monitors `class_id` and `confidence` distributions using K-S p-value test. |
+| ✅ | Add Screenshots/Links to Dashboards | `README.md` | Screenshots included. Access: Grafana (`localhost:3000`), Evidently (`localhost:7000`), API docs available with `/metrics` endpoint for Prometheus scraping. |
 
 ---
 
