@@ -6,7 +6,7 @@ This document tracks the individual contributions of each team member to the Flo
 
 ## Team Members & Contributions
 
-### 1. Qar-Raz
+### 1. Qar-Raz (Qamar Raza)
 - Frontend
 - Backend api logic
 - Improved and Helped in Model serving logic
@@ -17,7 +17,7 @@ This document tracks the individual contributions of each team member to the Flo
 - Containerization Architecture Design
 
 
-### 2. hamza7523
+### 2. hamza7523 (Hamza Zaman)
 - Azure Configuration ACR
 - AWS Configuration S3
 - Ec2 Configuration
@@ -27,14 +27,14 @@ This document tracks the individual contributions of each team member to the Flo
 - Guardrails Implementation
 - 
 
-### 3. ZainSharjeel
+### 3. ZainSharjeel (Zain Sharjeel)
 - Evidently AI
 - Prometheus and Grafana (M2)
 - M1 Documentation
 - M2 Documentation
 - Making Dashboards
 
-### 4. AbdullahKhalid-projects
+### 4. AbdullahKhalid-projects (Abdullah Khalid)
 * CV MODEL Training
 * RAG model Training
 * CV model dataset research
@@ -47,7 +47,7 @@ This document tracks the individual contributions of each team member to the Flo
 * M2 Bonus - Custom Retrievers, langchain
 
 
-### 5. AnushaRandhawa
+### 5. AnushaRandhawa (Anusha Randhawa)
 - Prometheus and Grafana for M1
 - Curated Milestone 2 content
 - Error debugging in docker-compose.yml, dockerfile, dependency conflicts
