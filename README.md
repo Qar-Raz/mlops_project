@@ -415,7 +415,7 @@ Comprehensive data quality metrics including missing values, data types, and con
 ### 4. Evidently AI Dashboard 5/12/2025
 <img width="1280" height="660" alt="image" src="https://github.com/user-attachments/assets/caedc215-181a-401a-ae13-e9d95288c63a" />
 
-### 5. MLFLOW 
+### 5. MLFLOW
 <img width="1920" height="955" alt="Screenshot 2025-12-06 at 3 58 27 PM" src="https://github.com/user-attachments/assets/bcfc1ca9-1eb2-4939-9e3c-af9f261c30be" />
 
 Charts for mlflow:
@@ -810,6 +810,53 @@ Open browser:
 
 ```
 http://127.0.0.1:8000/docs
+```
+
+## 📖 API Documentation
+
+### 1. Chat Endpoint (`/chat`)
+Interact with the LLM using RAG context.
+
+**cURL Example:**
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/chat' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "question": "How do I treat tomato blight?",
+  "context": "Tomato blight is a fungal disease..."
+}'
+```
+
+**JSON Schema:**
+```json
+{
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string",
+      "title": "Question"
+    },
+    "context": {
+      "type": "string",
+      "title": "Context"
+    }
+  },
+  "required": ["question", "context"]
+}
+```
+
+### 2. Prediction Endpoint (`/predict`)
+Upload an image for disease classification and treatment advice.
+
+**cURL Example:**
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/predict' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@plant_image.jpg;type=image/jpeg'
 ```
 
 ---

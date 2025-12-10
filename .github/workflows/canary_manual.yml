@@ -1,0 +1,47 @@
+name: Manual Canary Deployment Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  canary-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Create dummy models directory
+        run: mkdir -p backend/models
+
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t flora-backend:canary ./backend
+
+      - name: Run Backend Container (Canary Mode)
+        run: |
+          docker run -d \
+            --name flora-backend \
+            -p 8000:8000 \
+            -e SKIP_MODELS=true \
+            flora-backend
+
+          echo "Waiting for container to start..."
+          sleep 10
+          docker logs flora-backend
+
+      - name: Install Test Dependencies
+        run: pip install requests
+
+      - name: Run Canary Test
+        run: python tests/canary_test.py
+
+      - name: Stop and Remove Container
+        if: always()
+        run: |
+          docker stop flora-backend || true
+          docker rm flora-backend || true

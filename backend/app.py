@@ -115,6 +115,10 @@ async def metrics():
 async def startup_event():
     print("⚙️ Initializing System Components...")
 
+    if os.getenv("SKIP_MODELS") == "true":
+        print("⚠️ SKIP_MODELS is set. Skipping model loading for testing/canary.")
+        return
+
     # 1. Load Computer Vision Model (Raw ONNX Runtime - No PyTorch)
     if os.path.exists(ONNX_DIR):
         print("🚀 Loading ONNX CV Model (Slim Mode)...")
