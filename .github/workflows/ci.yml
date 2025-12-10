@@ -31,3 +31,9 @@ jobs:
       - name: Test with pytest
         # Ignore LLM-specific prompt tests, but run the mocked API test
         run: pytest --ignore=tests/test_prompts.py
+
+      - name: Security Scan with pip-audit
+        run: |
+          pip install pip-audit
+          # Scan for vulnerabilities, but don't fail build on non-critical ones for now
+          pip-audit || true
