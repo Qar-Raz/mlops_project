@@ -11,8 +11,8 @@ Built on a modern **Microservices Architecture**, the system features:
 *   **Monitoring:** Comprehensive monitoring using **Prometheus** & **Grafana** for system metrics, and **Evidently AI** for ML data drift detection.
 
 ## 📊 Project Status
-- **Milestone 1:** ✅ **9/9 Deliverables** | 🌟 **0/4 Bonus**
-- **Milestone 2:** ✅ **8/8 Deliverables** | 🌟 **1/3 Bonus**
+- **Milestone 1:** ✅ **9/9 Deliverables** |
+- **Milestone 2:** ✅ **8/8 Deliverables** |
 
 ## 🔗 Quick Links
 - **🎥 [Website Demo](https://drive.google.com/drive/folders/1cJMO7OChqmSsNk4tK0FmxPzJXJ2AmudD?usp=drive_link)**
@@ -46,38 +46,68 @@ Built on a modern **Microservices Architecture**, the system features:
     1.  **Frontend:** Instant deployments to **Vercel**.
     2.  **Backend:** Robust Docker build-and-push pipeline to **Azure Container Registry (ACR)**, handling heavy artifacts that exceed standard free-tier limits.
 
+---
+### Dataset used for computer vision model training:
+https://www.kaggle.com/datasets/mohitsingh1804/plantvillage  
 
-## File Structure
+### Dataset used for RAG model: 
+scraped 350 + edu websites using scrape command provided in web_scrapping_for_corpus
+```text
+
+mlops_project/
+│
+│── .github/                    # CI/CD workflows
+│── .vs/                        # Visual Studio Code configuration
+│── Web_Scrapping_For_Corpus/   # Scripts for scraping RAG knowledge base
+│
+│── backend/                    # FastAPI Inference Engine
+│   ├── src/                    # Application source code
+│   └── app/                    # Core logic and routes
+│
+│── data/                       # contains prompts for testing
+│── docs/                       # Project Documentation and deliverables
+│   ├── Corpus_Scrapping_Report.md  # Data collection methodology
+│   ├── M1_D5(Monitoring).md        # Health checks & Grafana integration
+│   ├── M1_Evidently_Dashboards.md  # Data drift & quality reports
+│   ├── M2_D1 (Prompt Report).md    # RAG prompt engineering analysis
+│   ├── M2_D5 (Testing).md          # Unit & integration testing results
+│   ├── RAG Pipeline Document.md    # Architecture & retrieval logic
+│   ├── guardrails.md               # Safety rails & input validation
+│   └── mlflowreport.md             # Model performance tracking
+│── experiments/                # Jupyter notebooks & model prototyping
+│── frontend/                   # Next.js Web Application
+│── grafana/                    # Grafana dashboard configurations
+│── mlruns/                     # MLflow experiment tracking logs
+│── tests/                      # Unit and integration test suite
+│
+│── .gitignore                  # Git ignore rules
+│── .pre-commit-config.yaml     # Pre-commit hooks for code quality
+│── CODE_OF_CONDUCT.md          # Community standards
+│── CONTRIBUTION.md             # Contribution guidelines
+│── Dockerfile                  # Main backend container definition
+│── EVALUATION.md               # Model & RAG evaluation results
+│── LICENSE                     # MIT License
+│── MakeFile                    # Automation commands (make rag, make run)
+│── Milestone1_Doc.md           # Milestone 1 checklist & report
+│── Milestone2_Doc.md           # Milestone 2 checklist & report
+│── README.md                   # Main documentation
+│── SECURITY.md                 # Security policies & guardrails
+│── docker-compose.yml          # Container orchestration (App, Prom, Grafana)
+│── prometheus.yml              # Prometheus metrics configuration
+│── requirements-dev.txt        # Development dependencies
+└── requirements.txt            # Production dependencies
+
 ```
-│   Dockerfile  
-│   MakeFile  
-│   Milestone1_Doc.md  
-│   Milestone2_Doc.md  
-│   prometheus.yml  
-│   README.md  
-│   requirements.txt  
-│   SECURITY.md  
-├───.github  
-│   │   CODEOWNERS  
-│   └───workflows  
-├───backend  
-│   └───scripts  
-├───data  
-├───docs    
-├───experiments  
-│   ├───prompts  
-│   └───results  
-├───frontend  
-│   ├───app  
-│   ├───components  
-├───grafana  
-│   ├───dashboards  
-│   └───provisioning  
-│       ├───dashboards  
-│       └───datasources  
-├───mlruns  
-├───tests  
-└───Web_Scrapping_For_Corpus  
+🌿 Branching Strategy:
+
+We use a strict naming convention to automate workflows based on branch names.
+```text
+Branch Type   │ Naming Convention        │ Example Case
+──────────────┼──────────────────────────┼──────────────────────────────
+Main          │ main                     │ Production-ready code
+Feature       │ feature/<short-desc>     │ feature/add-logging-module
+Bugfix        │ bugfix/<issue-id-desc>   │ bugfix/404-fix-api-error
+Release       │ release/v<version>       │ release/v1.2.0
 ```
 
 ---
