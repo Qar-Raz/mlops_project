@@ -67,7 +67,7 @@ Here is the **Milestone 1 Tracking Sheet** based on the PDF provided, formatted 
 
 | Status | Task / Requirement | Artifact Location | Notes / Implementation Details |
 | :---: | --- | --- | --- |
-| ⬜ | **MLflow:** Tracking URI hosted (Local/MinIO/S3) | `README` / Code | Model v1 registered & linked. |
+| ✅ | **MLflow:** Tracking URI hosted (Local/MinIO/S3) | `README` / Code | Model v1 registered & linked. |
 | ✅ | **Evidently Dashboard:** Data drift on held-out test set | `localhost:7000` | Monitors 38 plant disease classes. Uses K-S test for drift detection. Reads from `class_names.txt`. |
 | ✅ | **Prometheus + Grafana:** Collect 3+ metrics (e.g., gpu_util) | `docker-compose` / Config | Prometheus scrapes every 5s. Tracks `http_requests_total` & `http_request_duration_seconds`. Instrumented via `prometheus-fastapi-instrumentator`. |
 | ✅ | **Proof:** Screenshot or public link included | `README.md` | Access: Grafana (`localhost:3000`), Prometheus (`localhost:9090`), Evidently (`localhost:7000`). |
