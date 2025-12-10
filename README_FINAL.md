@@ -53,6 +53,265 @@ This README serves as the central documentation for our project, detailing the e
 
 ---
 
+### MLOps & LLMOps  - Milestone 2  
+
+This portion of the README explains the M2 milestone, that focused on moving the project from initial planning into practical implementation. The work in M2 centered on building the core components of the system,
+refining the data pipeline, running structured experiments, and establishing the monitoring and testing setup needed for reliable performance.
+
+## LLMOps Objectives
+- Compare multiple prompt strategies on a curated evaluation dataset.  
+- Implement a **Retrieval-Augmented Generation (RAG)** workflow with ingestion & inference pipelines.  
+- Integrate monitoring, evaluation, and safety guardrails into the LLM pipeline.  
+- Document, containerize, and automate everything through CI/CD.
+
+## Prompt Engineering Workflow
+We conducted an experiment to evaluate three distinct prompting strategies for the Flora Chatbot using the **TinyLlama-1.1B** model, measuring performance with the **ROUGE-L** metric and human evaluation. The **Few-Shot Prompting** strategy proved to be the most effective, delivering an **Average ROUGE-L Score of 0.2928**—an improvement of **+125%** over the Zero-Shot baseline. While Meta-Prompting (persona-based) struggled with the smaller model's ability to follow complex instructions, the Few-Shot approach provided the necessary concrete examples for the model to generate accurate and concise answers, resulting in a superior Average Human Score of **4.2/5**. We therefore recommend and adopted **Few-Shot Prompting** as the primary strategy for the RAG inference pipeline.
+
+## RAG (Retrieval-Augmented Generation) Pipeline
+The **Flora Care Production Pipeline** is a hybrid diagnostic system integrating **Computer Vision (CV)** and **Retrieval-Augmented Generation (RAG)** to provide comprehensive plant disease advice. The CV component uses a fine-tuned **Swin Transformer** for visual symptom detection, while the RAG component processes agricultural text knowledge, splits it using a **Recursive Character Splitter**, and stores it in a **ChromaDB** vector store embedded by `sentence-transformers/all-MiniLM-L6-v2`. The entire workflow, including CV training and RAG ingestion, is tracked end-to-end using **MLflow** for experiment logging and artifact management. Crucially, the system features a **Hybrid Ensemble Retriever** that combines **BM25 (sparse)** and the **Chroma Dense Retriever (semantic)** with weights of **[0.4, 0.6]** to optimize the final knowledge retrieval accuracy for the user's query.
+
+## Step by Step RAG Deployment Guide
+## 🚀 Running the RAG Pipeline
+
+### **1. Install dependencies**
+
+```bash
+pip install -r requirements.txt
+```
+
+### **2. Run ingestion**
+
+```bash
+make rag
+```
+
+### **3. Start the FastAPI server**
+
+```bash
+uvicorn src.app:app --reload
+```
+
+### **4. Test the API**
+
+Open browser:
+
+```
+http://127.0.0.1:8000/docs
+```
+## 📖 API Documentation
+
+### 1. Chat Endpoint (`/chat`)
+Interact with the LLM using RAG context.
+
+**cURL Example:**
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/chat' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "question": "How do I treat tomato blight?",
+  "context": "Tomato blight is a fungal disease..."
+}'
+```
+
+**JSON Schema:**
+```json
+{
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string",
+      "title": "Question"
+    },
+    "context": {
+      "type": "string",
+      "title": "Context"
+    }
+  },
+  "required": ["question", "context"]
+}
+```
+
+### 2. Prediction Endpoint (`/predict`)
+Upload an image for disease classification and treatment advice.
+
+**cURL Example:**
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/predict' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@plant_image.jpg;type=image/jpeg'
+```
+
+
+## Guardrails & Safety Mechanisms
+The **LightweightGuard** system implements a low-latency, two-tiered safety framework for the Flora-Bot API, crucial for managing both user input and model output.
+
+### Context-Aware Filtering
+The system employs **context-aware filtering** by modifying the blocklist to **allow** potentially sensitive terms (`kill`, `attack`, `die`) when used in the benign context of plant pathology, preventing false positives and ensuring legitimate agricultural advice is not blocked.
+
+### Two-Tier Validation
+1.  **Tier 1 (Optimized Regex):** Handles high-priority violations immediately using fast, pre-compiled Regular Expressions. This layer targets explicit categories such as **Hate Speech**, **Violence**, **Self-Harm**, and **PII** (including targeted regex for **Pakistani phone numbers** and emails).
+2.  **Tier 2 (Library Fallback):** Acts as a catch-all using the `better_profanity` library for general profanity missed by the custom regex rules.
+
+### Integration and Observability
+Guardrails are applied differently across endpoints: they validate both **Input and Output** on the `/chat` endpoint to save on inference costs, but only **Output** on the `/predict` (CV image) endpoint. The system is monitored via **Prometheus** using metrics like `guard_failures_total` and `guard_latency_seconds`. All violations trigger a logged error and return a standardized, safe fallback message to the user.
+
+<img width="1280" height="360" alt="image" src="https://github.com/user-attachments/assets/76d9e913-01ed-4195-b56e-818f72a2cdd3" />
+
+<img width="1280" height="467" alt="image" src="https://github.com/user-attachments/assets/b381f598-912e-4eb7-a4de-0ec802f0d1fd" />
+
+## LLM Evaluation & Monitoring
+
+#### MLFlow
+The following figure displays the comprehensive list of metrics recorded at the conclusion of the 10th epoch:
+<img width="1920" height="955" alt="Screenshot 2025-12-06 at 3 58 27 PM" src="https://github.com/user-attachments/assets/4046fb73-f8b4-4cd9-ad01-36728a9fdfa4" />
+
+**Training Dynamics and Visualization Analysis**
+
+The following figures illustrate the progression of key metrics over the course of the training steps.  
+These visualizations provide insight into the learning schedule, convergence behavior, and system performance.
+
+<img width="1918" height="947" alt="Screenshot 2025-12-06 at 3 57 50 PM" src="https://github.com/user-attachments/assets/89fc92aa-b800-47d0-8fb4-6aad4193a86f" />
+
+<img width="1920" height="439" alt="Screenshot 2025-12-06 at 3 58 09 PM" src="https://github.com/user-attachments/assets/53d5374d-59f2-4aa7-bdd6-12df1f11ffb4" />
+
+#### Evidently Dashboard:
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/df3c7089-f581-4226-a263-58266aba14b7" />
+
+<img width="511" height="161" alt="image" src="https://github.com/user-attachments/assets/eb842224-1917-4169-a85c-084df59dc2a8" />
+
+#### Grafana
+<img width="1280" height="658" alt="image" src="https://github.com/user-attachments/assets/553d4087-d600-4b88-b06f-c2cf02578243" />
+
+####  Prometheus
+Prometheus scrapes our app every 5s. app is the service name from Docker Compose, so Prometheus can reach it over the Compose network instead of localhost. This is how you're supposed to wire Prometheus ↔ FastAPI in Docker.
+
+<img width="1280" height="656" alt="image" src="https://github.com/user-attachments/assets/de572ad1-49e0-4119-a124-d3ce2de856ed" />
+
+## CI/CD for LLMOps
+
+Included in `.github/workflows/ci.yml`:
+
+* Linting + format checks
+* Unit + integration tests
+* Prompt evaluation on sample dataset
+* Docker build & push
+* Canary deployment steps
+
+## Cloud Integration
+
+### Azure Deployment
+
+<img width="1280" height="600" alt="image" src="https://github.com/user-attachments/assets/5283af76-d528-46bd-8ca3-85b7b8bfa87e" />
+
+
+<img width="1163" height="480" alt="image" src="https://github.com/user-attachments/assets/c5fbceda-cbe7-46bc-8ed3-a36c784c68b6" />  
+
+### 🔧 Deployment Steps
+
+#### 1. AWS S3 Setup
+
+##### Creating S3 Bucket
+
+Created an S3 bucket named `mlopsmodel` in the `eu-north-1` region to store the trained model artifacts for version control and easy access.
+
+<img width="1568" height="306" alt="image" src="https://github.com/user-attachments/assets/f9acd689-5bf7-4b11-86e7-acbbfa39abbc" />
+
+**Bucket Details:**
+- **Name:** mlopsmodel
+- **Region:** Europe (Stockholm) eu-north-1
+- **Creation Date:** October 31, 2025, 01:41:30 (UTC+05:00)
+
+
+#### 2. IAM Role Configuration
+
+##### Setting Up EC2 Role with S3 Access
+
+**Step 1: Create IAM Role**
+- Role Name: `EC2-S3-Access-Role`
+- Trusted Entity: EC2 Service
+
+**Step 2: Attach Policies**
+
+Attached the following policy to allow EC2 instance to access S3 bucket:
+<img width="1396" height="478" alt="image" src="https://github.com/user-attachments/assets/345d9f30-2a23-42c1-b3c9-26129e9e5ec0" />
+
+**Step 3: Attach Role to EC2 Instance**
+- Navigated to EC2 Console
+- Selected the instance
+- Actions → Security → Modify IAM Role
+- Attached `EC2-S3-Access-Role`
+
+
+#### 3. EC2 Instance Setup
+
+##### Instance Configuration
+
+![EC2 Instance Running](https://github.com/user-attachments/assets/your-image-1-url)
+
+**Instance Details:**
+- **Instance Type:** t3.micro
+- **Instance ID:** i-0949fcf95473fe069
+- **Region:** eu-north-1a (Europe - Stockholm)
+- **Availability Zone:** eu-north-1a
+- **Status:** Running ✅
+- **Status Checks:** 3/3 checks passed
+- **Public IPv4:** ec2-51-20-114-61
+
+
+
+#### Running the Application
+
+##### Start Uvicorn Server with Auto-Reload
+<img width="1280" height="659" alt="image" src="https://github.com/user-attachments/assets/6708a6ec-d7d3-46ea-b7f4-08407d5a1ef8" />
+
+
+```bash
+# Navigate to project directory
+cd MLOPS_PROJECT
+
+# Run the application with hot-reload enabled
+python -m uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**Application Logs:**
+
+```
+INFO: Will watch for changes in these directories: ['/home/ec2-user/MLOPS_PROJECT']
+INFO: Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO: Started reloader process [68594] using WatchFiles
+INFO: Started server process [68650]
+INFO: Waiting for application startup.
+INFO: Application startup complete.
+INFO: 111.68.111.143:96960 - "GET /health HTTP/1.1" 200 OK
+```
+
+##### Access the API
+
+- **Health Check:** `http://51.20.114.61:8000/health`
+- **API Endpoint:** `http://51.20.114.61:8000/predict`
+- **API Documentation:** `http://51.20.114.61:8000/docs`
+
+**Health Check Response:** `200 OK` with `{"status":"ok"}`
+
+
+## Security and Compliance
+
+See **SECURITY.md** for:
+
+* Prompt injection defenses
+* PII policies
+* Data privacy guidelines
+* Safety guardrail architecture
+
+
+---
+---
+---
+
 ### MLOps - Milestone 1  
 
 ## Architecture Diagram
@@ -212,7 +471,8 @@ These linked jobs ensure operational safety before promoting the image to the fi
 * **Canary Deployment:** This is a manual-trigger workflow, allowing a reviewer to initiate deployment to a segregated canary environment. This job uses a minimal Docker-in-Docker setup to pull the newly built image and run it with the `CANARY=true` environment flag.
 * **Acceptance Test:** Immediately following a successful canary deployment, a dedicated test script runs. This script performs essential **smoke tests** and fires a suite of **golden-set queries** (known inputs/outputs) against the live, running canary service to verify:
     * The service is healthy (HTTP 200).
-    * The RAG functionality is retrieving documents and generating correct, governed outputs.
+    * The RAG functionality is retrieving documents and generating correct, governed outputs.  
+
 
 #### 🔄 CI/CD Summary
 
@@ -245,7 +505,9 @@ The primary objective was to establish a monitoring framework that provides visi
 MLFlow: 
 Grafana: http://localhost:3000  
 Prometheus: http://localhost:9090  
-Evidently: http://localhost:7000  
+Evidently: http://localhost:7000   
+
+These are according to our run, as they may change on every run
 
 ### Technology Stack
 
@@ -431,34 +693,4 @@ pkill -f uvicorn
 ```
 
 ---
-
-### MLOps & LLMOps  - Milestone 2  
-
-This portion of the README explains the M2 milestone, that focused on moving the project from initial planning into practical implementation. The work in M2 centered on building the core components of the system,
-refining the data pipeline, running structured experiments, and establishing the monitoring and testing setup needed for reliable performance.
-
-## LLMOps Objectives
-- Compare multiple prompt strategies on a curated evaluation dataset.  
-- Implement a **Retrieval-Augmented Generation (RAG)** workflow with ingestion & inference pipelines.  
-- Integrate monitoring, evaluation, and safety guardrails into the LLM pipeline.  
-- Document, containerize, and automate everything through CI/CD.
-
-## D1 — Prompt Engineering Workflow
-
-
-## D2 — RAG (Retrieval-Augmented Generation) Pipeline
-
-## D3 — Guardrails & Safety Mechanisms
-
-## D4 — LLM Evaluation & Monitoring
-
-## D5 — CI/CD for LLMOps
-
-## D6 — Documentation & Reports
-
-## D7 — Cloud Integration (Required)
-
-## D8 — Security & Compliance
-
-
 
