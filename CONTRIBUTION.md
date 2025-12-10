@@ -15,18 +15,21 @@ This document tracks the individual contributions of each team member to the Flo
 - Rag Evaluation + MLflow
 - Frontend Vercel Deployment
 - Rep structure, branch rules and Merging Check Rules
+- Prometheus and Grafana (Final)
 
 ### 2. hamza7523
 - Azure Configuration ACR
 - AWS Configuration S3 and EC2
 - Documentation for M1
-- README
+- README (M1)
 - Financially contributed for Cloud Services
 
 
 ### 3. ZainSharjeel
-- Evidently (Is not done Properly at all !)
-- GuardRails (NOT DONE IS STILL PENDING !)
+- Evidently AI
+- Prometheus and Grafana (M2)
+- M1 Documentation
+- M2 Documentation
 
 ### 4. AbdullahKhalid-projects
 - CV MODEL Training
@@ -38,5 +41,7 @@ This document tracks the individual contributions of each team member to the Flo
 - M2 Bonus - Custom Retrievers
 
 ### 5. AnushaRandhawa
-- Prometheus and Grafana for M1
-- Prometheus and Grafana for M2 (PENDING)
+- Prometheus and Grafana (M1)
+- M1 Documentation
+- M2 Documentation
+- README doc
