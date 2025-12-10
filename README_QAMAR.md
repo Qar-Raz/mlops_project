@@ -88,6 +88,29 @@ BACKEND_URL=http://127.0.0.1:8000
 ```
 *This configuration routes requests through the Next.js proxy (avoiding CORS) and points them to your local Docker container.*
 
+## Quick Start for Development
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/Qar-Raz/MLOPS_Project.git
+```
+
+#### 2. Create & Activate Virtual Environment
+This isolates our project's dependencies from your system.
+
+```bash
+# Create the virtual environment
+python -m venv .venv
+
+# Activate the environment (choose the command for your OS)
+
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows (Git Bash)
+source .venv/Scripts/activate
+```
+
+
 ## 🎨 Frontend UI
 Built with **Next.js** and **React**, featuring a modern, responsive chat interface with smooth animations.
 
