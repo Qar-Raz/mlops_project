@@ -204,11 +204,23 @@ export default function AIAssistantUI() {
       const formData = new FormData()
       formData.append("file", file)
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"
-      const response = await fetch(`${apiUrl}/predict`, {
-        method: "POST",
-        body: formData,
-      })
+      const primaryUrl = process.env.NEXT_PUBLIC_API_URL || "/api/proxy"
+      const fallbackUrl = "http://127.0.0.1:8000"
+
+      let response
+      try {
+        response = await fetch(`${primaryUrl}/predict`, {
+          method: "POST",
+          body: formData,
+        })
+        if (!response.ok) throw new Error("Primary API failed")
+      } catch (err) {
+        console.warn("Primary API failed, trying fallback...", err)
+        response = await fetch(`${fallbackUrl}/predict`, {
+          method: "POST",
+          body: formData,
+        })
+      }
 
       if (!response.ok) throw new Error("Prediction failed")
 
@@ -294,8 +306,10 @@ export default function AIAssistantUI() {
 
     if (conversation?.context) {
       // Chat mode
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"
-      fetch(`${apiUrl}/chat`, {
+      const primaryUrl = process.env.NEXT_PUBLIC_API_URL || "/api/proxy"
+      const fallbackUrl = "http://127.0.0.1:8000"
+
+      const fetchOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -303,7 +317,10 @@ export default function AIAssistantUI() {
           context: conversation.context,
           diagnosis: conversation.diagnosis
         })
-      })
+      }
+
+      fetch(`${primaryUrl}/chat`, fetchOptions)
+      .catch(() => fetch(`${fallbackUrl}/chat`, fetchOptions))
       .then(res => res.json())
       .then(data => {
         setConversations((prev) =>
