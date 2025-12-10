@@ -1,31 +1,60 @@
-# 🌱 FloraCare
+# 🌿 Fluora Care
+> **Experience the future of botanical intelligence.**
+> Advanced computer vision for precise plant health diagnostics.
 
-#### *Instant Diagnosis for Your Plants. Just an Image Away.*  
+**Fluora Care** is a robust, end-to-end MLOps solution designed to revolutionize plant health management. It seamlessly integrates a **Computer Vision** model for instant disease detection with a **RAG-powered LLM Chatbot** to provide actionable treatment advice.
 
-Experience the future of botanical intelligence. Advanced computer vision for precise plant health diagnostics.
+Built on a modern **Microservices Architecture**, the system features:
+*   **Frontend:** A responsive **Next.js** application deployed on **Vercel**.
+*   **Backend:** High-performance **FastAPI** inference engine serving PyTorch & ONNX models.
+*   **Infrastructure:** Containerized with Docker and hosted via **Azure Container Registry (ACR)**.
+*   **Monitoring:** Comprehensive monitoring using **Prometheus** & **Grafana** for system metrics, and **Evidently AI** for ML data drift detection.
 
-## Introduction  
+## 📊 Project Status
+- **Milestone 1:** ✅ **9/9 Deliverables** | 🌟 **0/4 Bonus**
+- **Milestone 2:** ✅ **8/8 Deliverables** | 🌟 **1/3 Bonus**
 
-This README serves as the central documentation for our project, detailing the evolution from a machine learning repository (Milestone 1) to a full-fledged, operationalized LLMOps and RAG system (Milestone 2).
+## 🔗 Quick Links
+- **🎥 [Website Demo](https://drive.google.com/drive/folders/1cJMO7OChqmSsNk4tK0FmxPzJXJ2AmudD?usp=drive_link)**
+- **🌐 [Website Deployment](https://mlops-project-five.vercel.app/)**
+  > *⚠️ Note: The backend API container is currently offline to conserve cloud credits. If the app does not respond, please refer to the demo video.*
+- **📋 [Milestone 1 Checklist](./Milestone1_Doc.md)**
+- **📋 [Milestone 2 Checklist](./Milestone2_Doc.md)**
+- **📂 [Detailed Deliverables Documentation](./docs/)**
+  > *Note: Detailed documentation is provided for advanced deliverables. Simpler tasks are documented directly in the checklists.*
+- **💻 [Frontend Source (Next.js)](./frontend/)**
+- **⚙️ [Backend Source (FastAPI)](./backend/)**
+- **🧪 [Test Suite](./tests/)**
+  > *Tests are automatically executed in the CI pipeline.*
+- **🔬 [Experiments & Evaluation](./experiments/)**
+   > *For evaluation of LLM, prompt report*
+
+## 🏆 Why Our Project Excels
+
+
+- **Fully Local & Private RAG (No APIs):** Unlike projects relying on paid APIs (OpenAI/GPT-4), we run a quantized **TinyLlama-1.1B** LLM and **ChromaDB** vector store entirely locally. This demonstrates advanced resource management and ensures complete data privacy.
+
+- **Complex CV + NLP Pipeline:** We don't just serve a simple Scikit-learn model. We deploy a heavy **PyTorch** Computer Vision model alongside an LLM, integrating multiple deep learning modalities into a single inference engine.
+
+- **Heavy Resource Management:** Our container is **5GB+** in size and requires **4GB+ RAM** to serve the CV and RAG models simultaneously. We deployed to **Azure** specifically because standard free-tier compute instances (often limited to 1GB RAM) were insufficient for this high-performance workload.
+
+- **Production-Grade Frontend:** Moved beyond prototyping tools like Streamlit or Gradio. We built a responsive, animated **Next.js (React)** application with a polished chat interface, demonstrating full-stack engineering capabilities.
+
+- **Custom-Built Knowledge Base:** We curated our own RAG corpus by scraping **322+ websites** covering all 38 plant disease classes, ensuring our chatbot provides domain-specific, accurate medical advice.
+
+- **Dual CI/CD Pipelines:** Implemented specialized workflows:
+    1.  **Frontend:** Instant deployments to **Vercel**.
+    2.  **Backend:** Robust Docker build-and-push pipeline to **Azure Container Registry (ACR)**, handling heavy artifacts that exceed standard free-tier limits.
+
 
 ## File Structure
 ```
-│   .gitignore  
-│   .pre-commit-config.yaml  
-│   CODE_OF_CONDUCT.md  
-│   CONTRIBUTION.md  
-│   docker-compose.yml  
 │   Dockerfile  
-│   EVALUATION.md  
-│   LICENSE  
 │   MakeFile  
 │   Milestone1_Doc.md  
 │   Milestone2_Doc.md  
 │   prometheus.yml  
 │   README.md  
-│   requirements-dev.in  
-│   requirements-dev.txt  
-│   requirements.in  
 │   requirements.txt  
 │   SECURITY.md  
 ├───.github  
@@ -52,6 +81,7 @@ This README serves as the central documentation for our project, detailing the e
 ```
 
 ---
+
 
 ### MLOps - Milestone 1  
 
