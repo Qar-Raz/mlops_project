@@ -5,12 +5,11 @@
 Experience the future of botanical intelligence. Advanced computer vision for precise plant health diagnostics.
 
 ## Introduction  
-This repository contains Floracare, an LLMOps project dedicated to plant disease diagnosis. It is structured across two major milestones. Milestone 1 established the MLOps foundation, guaranteeing a reproducible system with complete Dockerization, CI/CD pipelines, and initial MLOps monitoring via a Prometheus/Grafana stack. Milestone 2 extended this foundation into the world of LLMOps, implementing a Retrieval-Augmented Generation (RAG) system for highly accurate inference. This final submission demonstrates best practices in LLM operations, including advanced prompt engineering workflows, robust AI guardrails for safety, and real-time operational monitoring of LLM latency, cost, and violations.
 
 This README serves as the central documentation for our project, detailing the evolution from a machine learning repository (Milestone 1) to a full-fledged, operationalized LLMOps and RAG system (Milestone 2).
 
 ## File Structure
-
+```
 │   .gitignore  
 │   .pre-commit-config.yaml  
 │   CODE_OF_CONDUCT.md  
@@ -50,6 +49,7 @@ This README serves as the central documentation for our project, detailing the e
 ├───mlruns  
 ├───tests  
 └───Web_Scrapping_For_Corpus  
+```
 
 ---
 
