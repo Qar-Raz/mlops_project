@@ -28,7 +28,7 @@ jobs:
             --name flora-backend \
             -p 8000:8000 \
             -e SKIP_MODELS=true \
-            flora-backend
+            flora-backend:canary
 
           echo "Waiting for container to start..."
           sleep 10
