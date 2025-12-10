@@ -5,6 +5,34 @@ This document details the training dynamics and performance evaluation of the **
 The experiment was tracked using **MLflow** to monitor hyperparameters, loss convergence, and system throughput.  
 The analysis confirms that the model has successfully converged with high accuracy and stability.
 
+
+## 🛠️ Launching the MLflow Dashboards
+
+This project uses two independent MLflow tracking environments: one for **Model Training** and one for **Prompt Engineering**. Use the commands below to launch each dashboard.
+
+---
+
+### 1. View Model Training Experiments
+Runs on **Port 5000**. Tracks loss, accuracy, and training hyperparameters.
+
+```bash
+# Run this from the project root
+mlflow ui --backend-store-uri ./mlruns/mlruns_training --port 5000
+```
+
+Access at: http://localhost:5000
+
+### 2. View Prompt Engineering Experiments
+
+Runs on Port 5001. Tracks LLM prompts, inputs, and RAG outputs.
+
+```bash
+# Run this from the project root in a new terminal tab
+mlflow ui --backend-store-uri ./mlruns/mlruns_promptengineering --port 5001
+```
+
+Access at: http://localhost:5001
+
 ---
 
 # **1. Final Performance Metrics**
