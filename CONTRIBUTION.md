@@ -40,6 +40,7 @@ This document tracks the individual contributions of each team member to the Flo
 ### 5. AnushaRandhawa
 - Prometheus and Grafana for M1
 - Prepared documentation for Milestone 2 for README
+- Error debugging in docker-compose.yml, dockerfile and fixed requirements.txt
 - SECURITY.md describing prompt injection defenses and data privacy.
 - Document guardrails that enforce AI guidelines.
 - Put together README documenting Milestone 1 architecture
