@@ -88,23 +88,6 @@ BACKEND_URL=http://127.0.0.1:8000
 ```
 *This configuration routes requests through the Next.js proxy (avoiding CORS) and points them to your local Docker container.*
 
-## 🛠️ Makefile Commands
-For convenience, we provide a `Makefile` to automate common tasks.
-
-```bash
-# Install dependencies
-make install
-
-# Run the full RAG pipeline
-make rag
-
-# Run the backend API locally
-make run-app
-
-# Clean up cache and artifacts
-make clean
-```
-
 ## Quick Start for Development
 #### 1. Clone the Repository
 ```bash
@@ -183,21 +166,7 @@ For Corpus, we webscrapped 322 sites for all relevant plant information. More in
 ## 🧠 Model Training & RAG Pipeline
 Our system combines state-of-the-art Computer Vision with a custom Retrieval-Augmented Generation (RAG) pipeline.
 
-### 🔄 ML Workflow & Service Interaction
-The system integrates multiple MLOps services to ensure a robust lifecycle from data to inference.
-
-1.  **Data Ingestion:**
-    *   **CV Data:** PlantVillage dataset is loaded and augmented (random crops, flips) using `torchvision`.
-    *   **RAG Data:** Scraped agricultural text is chunked and embedded using `sentence-transformers`.
-2.  **Training & Tracking (MLflow):**
-    *   **CV Model:** The Swin Transformer training is tracked via **MLflow** (hosted locally on port 5000). It logs hyperparameters (learning rate, batch size), metrics (loss, accuracy), and artifacts (ONNX models).
-    *   **RAG Pipeline:** Ingestion parameters and vector store statistics are also logged to MLflow for reproducibility.
-3.  **Inference:**
-    *   The **FastAPI** backend loads the optimized ONNX model and ChromaDB vector store.
-    *   **Prometheus** scrapes real-time inference metrics (latency, request count) from the API.
-    *   **Evidently AI** monitors the input data for drift against the training baseline.
-
-## Architecture Diagram
+## Complete Model Architecture Diagram (RAG + CV + Monitoring)
 
 <img width="4144" height="4932" alt="DIAGRAM 1" src="https://github.com/user-attachments/assets/2b0f234c-585e-4f56-9f82-d80cf74efd44" />
 
@@ -269,38 +238,6 @@ mlflow ui --backend-store-uri ./mlruns/mlruns_training --port 5000
 ```
 *Access at: `http://localhost:5000`*
 
-### 🛠️ Step-by-Step RAG Deployment Guide
-To deploy the RAG pipeline locally, follow these steps:
-
-1.  **Prepare the Corpus:**
-    Ensure your scraped data is in `Web_Scrapping_For_Corpus/sample.json`.
-2.  **Run Ingestion:**
-    Execute the ingestion script to chunk text and build the ChromaDB vector store.
-    ```bash
-    python backend/ingest.py
-    ```
-    *This creates the `backend/models/flora_rag_db` directory.*
-3.  **Verify Database:**
-    Check that the vector store is populated.
-    ```bash
-    ls backend/models/flora_rag_db
-    ```
-4.  **Start the API:**
-    Launch the FastAPI server which loads the RAG retriever.
-    ```bash
-    uvicorn backend.app:app --reload
-    ```
-
-## 🧪 MLflow Experiment Tracking
-We use **MLflow** to track all experiments locally.
-
-**Launch the Dashboard:**
-```bash
-# View Model Training Experiments (Port 5000)
-mlflow ui --backend-store-uri ./mlruns/mlruns_training --port 5000
-```
-*Access at: `http://localhost:5000`*
-
 **Service Interaction:**
 *   **Training Scripts:** `pipeline.py` logs metrics directly to the local MLflow tracking URI.
 *   **Artifact Store:** Models and vector stores are saved as artifacts within MLflow runs for version control.
@@ -331,17 +268,17 @@ Prometheus Landing Page
 The following figure displays the comprehensive list of metrics recorded at the conclusion of the 10th epoch:
 <img width="1920" height="955" alt="Screenshot 2025-12-06 at 3 58 27 PM" src="https://github.com/user-attachments/assets/4046fb73-f8b4-4cd9-ad01-36728a9fdfa4" />
 
-These Figure shows the metrics for CV model
+These Figure shows the metrics for CV model 
 <img width="1918" height="947" alt="image" src="https://github.com/user-attachments/assets/2568205b-ff24-4fd1-981c-ff90413acea6" />
 
 <img width="1920" height="439" alt="image" src="https://github.com/user-attachments/assets/7e570e3b-3275-4f8d-9586-add758cdf61b" />
 
-**Metrics**
+**Metrics**  
 <img width="1920" height="955" alt="image" src="https://github.com/user-attachments/assets/618acf16-4fee-4ddb-8df4-09f71eebde38" />
 
 **Training Dynamics and Visualization Analysis**
 
-The following figures illustrate the progression of key metrics over the course of the training steps.
+The following figures illustrate the progression of key metrics over the course of the training steps.  
 These visualizations provide insight into the learning schedule, convergence behavior, and system performance.
 
 <img width="1918" height="947" alt="Screenshot 2025-12-06 at 3 57 50 PM" src="https://github.com/user-attachments/assets/89fc92aa-b800-47d0-8fb4-6aad4193a86f" />
@@ -361,7 +298,7 @@ These visualizations provide insight into the learning schedule, convergence beh
 <img width="1280" height="600" alt="image" src="https://github.com/user-attachments/assets/5283af76-d528-46bd-8ca3-85b7b8bfa87e" />
 
 
-<img width="1163" height="480" alt="image" src="https://github.com/user-attachments/assets/c5fbceda-cbe7-46bc-8ed3-a36c784c68b6" />
+<img width="1163" height="480" alt="image" src="https://github.com/user-attachments/assets/c5fbceda-cbe7-46bc-8ed3-a36c784c68b6" />  
 
 ### 🔧 Deployment Steps
 
@@ -388,7 +325,7 @@ We utilize GitHub Actions for a robust, automated development lifecycle.
 | **LLM Evaluation** | `llm-ci.yml` | Manual / Schedule | Runs prompt engineering experiments and evaluates LLM performance using Evidently AI. |
 | **Canary Test** | `canary_manual.yml` | Manual | Deploys a lightweight container instance to verify system health before full rollout. |
 
-Images of the workflows GitHub actions page are attached to demonstrate that the final run was successful
+Images of the workflows GitHub actions page are attached to demonstrate that the final run was successful 
 <img width="1907" height="835" alt="image" src="https://github.com/user-attachments/assets/5d15a3ce-8395-4f69-b255-a4aebfe1bb30" />
 <img width="1918" height="848" alt="image" src="https://github.com/user-attachments/assets/2d81fe79-2b58-4a54-9232-38c28fa4f35d" />
 <img width="1914" height="843" alt="image" src="https://github.com/user-attachments/assets/7b25ae15-cb9d-4a1c-8a31-2ec7ef8dfe76" />
@@ -398,20 +335,28 @@ Images of the workflows GitHub actions page are attached to demonstrate that the
 
 
 ## 🛡️ Guardrails & Safety
-We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs.
-
-**📄 [Read the full Guardrails Documentation](./docs/guardrails.md)**
+We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs, focusing on high-performance filtering without the latency overhead of secondary LLM calls.
 
 ### Key Safety Layers
 - **🚫 Content Moderation:** Optimized pattern matching to instantly block hate speech, violence, and self-harm content.
-- **🔒 PII Protection:** Automated detection and redaction of sensitive information like email addresses and phone numbers.
-- **🌿 Domain-Specific Context:** Custom-tuned filters that distinguish between botanical terms and harmful language.
-- **⚡ Low-Latency Execution:** Designed for millisecond-level response times.
+- **🔒 PII Protection:** Automated detection and redaction of sensitive information like email addresses and phone numbers (specifically optimized for regional formats).
+- **🌿 Domain-Specific Context:** Custom-tuned filters that distinguish between botanical terms (e.g., "kill weeds", "shoot blight") and harmful language, ensuring accurate medical advice isn't flagged falsely.
+- **⚡ Low-Latency Execution:** Designed for millisecond-level response times, running directly within the inference pipeline to maintain a smooth chat experience.
 
+- We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs.
+- **Image Shows guardrails in action for harmful language and then for personal information**
+- <img width="1674" height="746" alt="image" src="https://github.com/user-attachments/assets/e524fc54-6483-4d4d-ac19-aed2bd31adee" />
+
+
+**📄 [Read the full Guardrails Documentation](./docs/guardrails.md)**
 ## 📖 API Documentation
 The backend exposes a RESTful API via FastAPI. Below are the core endpoints.
 
 ### 1. Predict Disease (CV + RAG)
+**Image Showing the /docs endpoint
+<img width="1910" height="913" alt="image" src="https://github.com/user-attachments/assets/14c8c8db-dd7a-4ef1-b395-b64d9fc4a6c0" />
+
+
 Upload a plant leaf image to get a diagnosis and treatment plan.
 
 **Endpoint:** `POST /predict`
@@ -423,94 +368,10 @@ curl -X POST "http://localhost:8000/predict" \
      -F "file=@/path/to/leaf_image.jpg"
 ```
 
-**Response:**
-```json
-{
-  "diagnosis": "Apple___Black_rot",
-  "confidence": "98.5%",
-  "explanation": "Black rot is a fungal disease... [LLM Generated Advice]",
-  "chat_context": "..."
-}
-```
+**Response: For an Image of Apple Black rot (using /docs)**
+<img width="1060" height="735" alt="image" src="https://github.com/user-attachments/assets/764742ea-e3b1-4ff9-bbd3-e62646772610" />
 
-### 2. Chat with Expert (LLM)
-Ask follow-up questions based on the diagnosis context.
 
-**Endpoint:** `POST /chat`
-
-```bash
-curl -X POST "http://localhost:8000/chat" \
-     -H "Content-Type: application/json" \
-     -d '{
-           "question": "What fungicides should I use?",
-           "context": "Black rot is caused by..."
-         }'
-```
-
-**Response:**
-```json
-{
-  "answer": "For Black rot, effective fungicides include Captan and Myclobutanil..."
-}
-```
-
-### 3. System Metrics (Prometheus)
-Get real-time system performance and drift metrics.
-
-**Endpoint:** `GET /metrics`
-
-```bash
-curl -X GET "http://localhost:8000/metrics"
-```
-
-## ❓ FAQ & Troubleshooting
-
-### General Questions
-**Q: What is the primary goal of Fluora Care?**
-> **A:** To provide an offline-capable, privacy-focused tool for farmers to diagnose plant diseases using computer vision and receive treatment advice via a specialized chatbot.
-
-**Q: Why use a local LLM (TinyLlama) instead of OpenAI?**
-> **A:** We prioritize data privacy and cost-efficiency. Running locally ensures no sensitive agricultural data leaves the device and eliminates API usage fees.
-
-**Q: Is an internet connection required?**
-> **A:** No. Once the Docker container is built and models are downloaded, the entire inference pipeline (CV + Chat) runs completely offline.
-
-### Technical Troubleshooting
-**Q: The Docker container exits immediately with code 137?**
-> **A:** This usually means Out Of Memory (OOM). Ensure your Docker Desktop has at least **4GB RAM** allocated.
-
-**Q: I see "ONNX Model missing" in the logs?**
-> **A:** You need to download the model artifacts. Run `python backend/download_models.py` (if available) or ensure `backend/models/flora_cv_onnx/` contains `model.onnx`.
-
-**Q: How do I run this on Windows?**
-> **A:** We recommend using **WSL2** or **Git Bash**. The `Makefile` commands might need adjustment for PowerShell.
-
-## 📸 Gallery & Additional Screenshots
-<!-- PLACEHOLDER: Add more UI screenshots here -->
-<br>
-<br>
-
-<!-- PLACEHOLDER: Add Cloud Console screenshots here -->
-<br>
-<br>
-
-## D8: Security & Compliance
-The project enforces strict security and governance standards. Compliance is addressed through clear documentation, including the presence of an **MIT License** in the root directory, which defines usage rights, and a **CODE\_OF\_CONDUCT.md** file, which guides ethical contributions.
-
-### 🛡️ Vulnerability Scanning
-For runtime security, we integrated mandatory dependency scanning into our CI/CD workflow. This process utilizes **`pip-audit`** to check all project dependencies for known vulnerabilities.
-
-**Run Locally:**
-```bash
-pip install pip-audit
-pip-audit
-```
-
-**Scan Results:**
-<!-- PLACEHOLDER: Add screenshot of pip-audit output here -->
-<br>
-
-The pipeline is configured to fail builds if critical CVEs are detected, ensuring no vulnerable code reaches production.
 
 ### 2. Chat with Expert (LLM)
 Ask follow-up questions based on the diagnosis context.
