@@ -344,12 +344,19 @@ We implement a multi-layered safety architecture to ensure responsible AI intera
 - **⚡ Low-Latency Execution:** Designed for millisecond-level response times, running directly within the inference pipeline to maintain a smooth chat experience.
 
 - We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs.
+- **Image Shows guardrails in action for harmful language and then for personal information**
+- <img width="1674" height="746" alt="image" src="https://github.com/user-attachments/assets/e524fc54-6483-4d4d-ac19-aed2bd31adee" />
+
 
 **📄 [Read the full Guardrails Documentation](./docs/guardrails.md)**
 ## 📖 API Documentation
 The backend exposes a RESTful API via FastAPI. Below are the core endpoints.
 
 ### 1. Predict Disease (CV + RAG)
+**Image Showing the /docs endpoint
+<img width="1910" height="913" alt="image" src="https://github.com/user-attachments/assets/14c8c8db-dd7a-4ef1-b395-b64d9fc4a6c0" />
+
+
 Upload a plant leaf image to get a diagnosis and treatment plan.
 
 **Endpoint:** `POST /predict`
@@ -361,15 +368,10 @@ curl -X POST "http://localhost:8000/predict" \
      -F "file=@/path/to/leaf_image.jpg"
 ```
 
-**Response:**
-```json
-{
-  "diagnosis": "Apple___Black_rot",
-  "confidence": "98.5%",
-  "explanation": "Black rot is a fungal disease... [LLM Generated Advice]",
-  "chat_context": "..."
-}
-```
+**Response: For an Image of Apple Black rot (using /docs)**
+<img width="1060" height="735" alt="image" src="https://github.com/user-attachments/assets/764742ea-e3b1-4ff9-bbd3-e62646772610" />
+
+
 
 ### 2. Chat with Expert (LLM)
 Ask follow-up questions based on the diagnosis context.
@@ -385,12 +387,9 @@ curl -X POST "http://localhost:8000/chat" \
          }'
 ```
 
-**Response:**
-```json
-{
-  "answer": "For Black rot, effective fungicides include Captan and Myclobutanil..."
-}
-```
+**Response: for Chat after diagnosing Apple Black Rot**
+<img width="1450" height="950" alt="image" src="https://github.com/user-attachments/assets/886d76c6-e139-42c2-8a01-30424cf1a445" />
+
 
 ### 3. System Metrics (Prometheus)
 Get real-time system performance and drift metrics.
