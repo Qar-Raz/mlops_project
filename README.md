@@ -114,8 +114,14 @@ source .venv/Scripts/activate
 ## 🎨 Frontend UI
 Built with **Next.js** and **React**, featuring a modern, responsive chat interface with smooth animations.
 
+The following shows the Vercel Dashboard:
+<img width="1909" height="1002" alt="image" src="https://github.com/user-attachments/assets/22cfa87a-e9b4-4c2d-8d1c-7342fb92271d" />
+
+Main UI Images
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/9789a77c-f29c-4b0e-bca9-d8253673c6f6" />
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/a28614db-a542-4f08-b7e8-bd76c677782e" />
+<img width="1912" height="998" alt="image" src="https://github.com/user-attachments/assets/e640ec68-aa78-4e27-9868-c906055ce1d8" />
+
 
 
 ## 🏗️ Architecture Overview
@@ -264,10 +270,90 @@ We implement a multi-layered safety architecture to ensure responsible AI intera
 - **🔒 PII Protection:** Automated detection and redaction of sensitive information like email addresses and phone numbers (specifically optimized for regional formats).
 - **🌿 Domain-Specific Context:** Custom-tuned filters that distinguish between botanical terms (e.g., "kill weeds", "shoot blight") and harmful language, ensuring accurate medical advice isn't flagged falsely.
 - **⚡ Low-Latency Execution:** Designed for millisecond-level response times, running directly within the inference pipeline to maintain a smooth chat experience.
- 
-## D8: Security & Compliance
-The project enforces strict security and governance standards. Compliance is addressed through clear documentation, including the presence of an **MIT License** in the root directory, which defines usage rights, and a **CODE\_OF\_CONDUCT.md** file, which guides ethical contributions.
 
-For runtime security, we integrated mandatory dependency scanning into our CI/CD workflow. This process utilizes **`pip-audit`** to check all project dependencies for known vulnerabilities, with a critical policy that automatically fails the build and blocks deployment if any package contains a critical Common Vulnerability and Exposure (CVE).
+- We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs.
+
+**📄 [Read the full Guardrails Documentation](./docs/guardrails.md)**
+## 📖 API Documentation
+The backend exposes a RESTful API via FastAPI. Below are the core endpoints.
+
+### 1. Predict Disease (CV + RAG)
+Upload a plant leaf image to get a diagnosis and treatment plan.
+
+**Endpoint:** `POST /predict`
+
+```bash
+curl -X POST "http://localhost:8000/predict" \
+     -H "accept: application/json" \
+     -H "Content-Type: multipart/form-data" \
+     -F "file=@/path/to/leaf_image.jpg"
+```
+
+**Response:**
+```json
+{
+  "diagnosis": "Apple___Black_rot",
+  "confidence": "98.5%",
+  "explanation": "Black rot is a fungal disease... [LLM Generated Advice]",
+  "chat_context": "..."
+}
+```
+
+### 2. Chat with Expert (LLM)
+Ask follow-up questions based on the diagnosis context.
+
+**Endpoint:** `POST /chat`
+
+```bash
+curl -X POST "http://localhost:8000/chat" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "question": "What fungicides should I use?",
+           "context": "Black rot is caused by..."
+         }'
+```
+
+**Response:**
+```json
+{
+  "answer": "For Black rot, effective fungicides include Captan and Myclobutanil..."
+}
+```
+
+### 3. System Metrics (Prometheus)
+Get real-time system performance and drift metrics.
+
+**Endpoint:** `GET /metrics`
+
+```bash
+curl -X GET "http://localhost:8000/metrics"
+```
+
+## ❓ FAQ & Troubleshooting
+
+**Q: The Docker container exits immediately with code 137?**
+> **A:** This usually means Out Of Memory (OOM). Ensure your Docker Desktop has at least **4GB RAM** allocated.
+
+**Q: I see "ONNX Model missing" in the logs?**
+> **A:** You need to download the model artifacts. Run `python backend/download_models.py` (if available) or ensure `backend/models/flora_cv_onnx/` contains `model.onnx`.
+
+**Q: How do I run this on Windows?**
+> **A:** We recommend using **WSL2** or **Git Bash**. The `Makefile` commands might need adjustment for PowerShell.
+ 
+### 🛡️ Vulnerability Scanning
+For runtime security, we integrated mandatory dependency scanning into our CI/CD workflow. This process utilizes **`pip-audit`** to check all project dependencies for known vulnerabilities.
+
+**Run Locally:**
+```bash
+pip install pip-audit
+pip-audit
+```
+
+**Scan Results:**
+<img width="239" height="428" alt="image" src="https://github.com/user-attachments/assets/1dde60cd-6f05-4cb5-8a7e-e435d7dacebf" />
+
+<br>
+
+The pipeline is configured to fail builds if critical CVEs are detected, ensuring no vulnerable code reaches production.
 
 #
