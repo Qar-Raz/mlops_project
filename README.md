@@ -118,10 +118,6 @@ Built with **Next.js** and **React**, featuring a modern, responsive chat interf
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/a28614db-a542-4f08-b7e8-bd76c677782e" />
 
 
-*(Place UI screenshots here)*
-<br>
-<br>
-
 ## 🏗️ Architecture Overview
 The system follows a microservices architecture, integrating multiple components for a seamless user experience.
 
@@ -171,9 +167,22 @@ We built a hybrid retrieval system to ground LLM responses in factual agricultur
 
 
 ## 📈 Monitoring
+Grafana Landing Page:
+<img width="1919" height="1003" alt="image" src="https://github.com/user-attachments/assets/aedbf663-1650-4227-a02b-8fdbf9eff8d5" />
+
+Grafana Dashboard with System Information (Milestone 1)
+<img width="1422" height="531" alt="image" src="https://github.com/user-attachments/assets/40444dd8-9a89-49e5-b4da-181d6aeac884" />
+
+
+Grafana Dashboard with Guardrails and Token Information (Milestone 2)
 <img width="1280" height="360" alt="image" src="https://github.com/user-attachments/assets/76d9e913-01ed-4195-b56e-818f72a2cdd3" />
 
 <img width="1280" height="467" alt="image" src="https://github.com/user-attachments/assets/b381f598-912e-4eb7-a4de-0ec802f0d1fd" />
+
+Prometheus Landing Page
+<img width="1915" height="1025" alt="image" src="https://github.com/user-attachments/assets/12584bfa-c899-427f-a945-4d71d0fd95e3" />
+
+
 
 ## LLM Evaluation & Monitoring Using MLflow
 
@@ -237,6 +246,15 @@ We utilize GitHub Actions for a robust, automated development lifecycle.
 | **Build & Push** | `build-push.yml` | Push to `main` | Builds the backend Docker image and pushes it to Azure Container Registry (ACR). |
 | **LLM Evaluation** | `llm-ci.yml` | Manual / Schedule | Runs prompt engineering experiments and evaluates LLM performance using Evidently AI. |
 | **Canary Test** | `canary_manual.yml` | Manual | Deploys a lightweight container instance to verify system health before full rollout. |
+
+Images of the workflows GitHub actions page are attached to demonstrate that the final run was successful 
+<img width="1907" height="835" alt="image" src="https://github.com/user-attachments/assets/5d15a3ce-8395-4f69-b255-a4aebfe1bb30" />
+<img width="1918" height="848" alt="image" src="https://github.com/user-attachments/assets/2d81fe79-2b58-4a54-9232-38c28fa4f35d" />
+<img width="1914" height="843" alt="image" src="https://github.com/user-attachments/assets/7b25ae15-cb9d-4a1c-8a31-2ec7ef8dfe76" />
+<img width="1915" height="848" alt="image" src="https://github.com/user-attachments/assets/bb878ad0-7bec-4ca9-859e-ba8312ecc07a" />
+
+
+
 
 ## 🛡️ Guardrails & Safety
 We implement a multi-layered safety architecture to ensure responsible AI interactions. Our **LightweightGuard** system provides real-time validation for both user inputs and model outputs, focusing on high-performance filtering without the latency overhead of secondary LLM calls.
