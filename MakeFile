@@ -4,17 +4,17 @@
 install:
 	pip install -r requirements.txt
 
-# 2. Run the Full Pipeline which i have put in src/backend folder
+# 2. Run the Full Pipeline
 rag:
-	python src/pipeline.py
+	python backend/pipeline.py
 
 # 3. Run just the API
 run-app:
-	uvicorn src.app:app --reload
+	cd backend && uvicorn app:app --reload
 
 # 4. Clean up logs and cache
 clean:
 	rm -rf __pycache__
-	rm -rf src/__pycache__
-	rm -rf flora_cv_model
-	rm -rf flora_rag_db
+	rm -rf backend/__pycache__
+	rm -rf backend/models/flora_cv_onnx
+	rm -rf backend/models/flora_rag_db

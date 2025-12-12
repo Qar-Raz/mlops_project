@@ -6,7 +6,7 @@
 | :---: | --- |
 | ⬜ | **To Do** |
 | 🚧 | **DONE BUT WITH CAVEATS** |
-| ✅ | **Done** | 
+| ✅ | **Done** |
 
 ---
 
@@ -74,7 +74,7 @@
 | ✅ | **Step A:** Linting + Tests for prompt scripts | `.github/workflows/ci.yml` | Uses `ruff`, `black`, and mocked `pytest`. |
 | ✅ | **Step B:** Automated Prompt Eval (Small dataset) | `.github/workflows/llm-ci.yml` | Runs `experiments/run_eval.py` on dispatch. |
 | ✅ | **Step C:** Docker Build & Push (RAG API) | `.github/workflows/build-push.yml` | Pushes to Azure Container Registry (ACR). |
-| 🚧 | **Step D:** Canary Deployment (LLM Service) | N/A | **DONE BUT WITH CAVEAT:** Skipped to avoid unnecessary compute costs and ACR credit consumption. |
+| ✅ | **Step D:** Canary Deployment (LLM Service) | `.github/workflows/canary_manual.yml` | Implemented via manual workflow to save credits. |
 | ✅ | Achieve **80% Code Coverage** (Unit + Integration) | `tests/` | Test cases in the mentioned folder. |
 
 ---
