@@ -20,8 +20,8 @@ Here is the **Milestone 1 Tracking Sheet** based on the PDF provided, formatted 
 | ✅ | One-line elevator pitch + Project Logo (Optional) | `frontend/app/page.tsx` | **Fluora Care**: Experience the future of botanical intelligence. Advanced computer vision for precise plant health diagnostics. |
 | ✅ | **Architecture Diagram:** Data Ingestion → Training → Inference | `README.md` | Visualized in the main README. |
 | ✅ | **Quick-start:** `git clone ... && make dev` | `docs/Additional/SETUP.md` | Comprehensive setup guide provided here. |
-| ✅ | **Make Targets:** Documentation for `make test`, `make docker`, etc. | `.github/workflows/ci.yml` / `Dockerfile` | We do not use Makefiles. Testing is handled in CI workflows and Docker is built from root. |
-| ✅ | **FAQ:** Common build errors & Windows/Mac setup | `docs/Additional/SETUP.md` | Troubleshooting and setup details. |
+| ✅ | **Make Targets:** Documentation for `make test`, `make docker`, etc. | `README.md` | Documented in "Makefile Commands" section. |
+| ✅ | **FAQ:** Common build errors & Windows/Mac setup | `README.md` | Troubleshooting and setup details. |
 
 ---
 
@@ -44,7 +44,7 @@ Here is the **Milestone 1 Tracking Sheet** based on the PDF provided, formatted 
 | ✅ | Base Image: `python:3.11-slim` or Alpine | `backend/Dockerfile` | Using `python:3.11-slim`. |
 | ✅ | **Multi-stage build:** Install libs -> Copy src -> Install deps | `backend/Dockerfile` | Optimized with BuildKit cache mounts (`RUN --mount=type=cache`). |
 | 🚧 | **Security:** Non-root user `app` configured | `backend/Dockerfile` | Currently running as root (default). |
-| 🚧 | **Healthcheck:** Script pinging `/health` endpoint | `backend/Dockerfile` | Not explicitly defined in Dockerfile, but `curl` is installed for manual checks. |
+| ✅ | **Healthcheck:** Script pinging `/health` endpoint | `backend/Dockerfile` | Implemented `HEALTHCHECK` pinging `/metrics`. |
 
 ---
 

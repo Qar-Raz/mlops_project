@@ -34,5 +34,9 @@ ENV MODEL_DIR=/backend/models
 # 7. Copy App
 COPY . .
 
+# 8. Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8000/metrics || exit 1
+
 EXPOSE 8000
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
