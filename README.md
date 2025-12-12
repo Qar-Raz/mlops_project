@@ -128,6 +128,25 @@ source .venv/Scripts/activate
 ```
 
 
+## 🛠️ Makefile Commands
+For convenience, we provide a `Makefile` to automate the RAG pipeline. 
+
+**IMPORTANT NOTE : WE OPTED FOR CONTAINER BUILD OVER MAKEFILES SO READ LOCAL SETUP GUIDE FOR COMPLETE LOCAL DEPLOYMENT** 
+
+```bash
+# Install dependencies
+make install
+
+# Run the full RAG pipeline
+make rag
+
+# Run the backend API locally
+make run-app
+
+# Clean up cache and artifacts
+make clean
+```
+
 ## 🎨 Frontend UI
 Built with **Next.js** and **React**, featuring a modern, responsive chat interface with smooth animations.
 
@@ -182,6 +201,21 @@ The system integrates multiple MLOps services to ensure a robust lifecycle from 
 
 <img width="4144" height="4932" alt="DIAGRAM 1" src="https://github.com/user-attachments/assets/2b0f234c-585e-4f56-9f82-d80cf74efd44" />
 
+
+### 🔄 ML Workflow & Service Interaction
+The system integrates multiple MLOps services to ensure a robust lifecycle from data to inference.
+
+1.  **Data Ingestion:**
+    *   **CV Data:** PlantVillage dataset is loaded and augmented (random crops, flips) using `torchvision`.
+    *   **RAG Data:** Scraped agricultural text is chunked and embedded using `sentence-transformers`.
+2.  **Training & Tracking (MLflow):**
+    *   **CV Model:** The Swin Transformer training is tracked via **MLflow** (hosted locally on port 5000). It logs hyperparameters (learning rate, batch size), metrics (loss, accuracy), and artifacts (ONNX models).
+    *   **RAG Pipeline:** Ingestion parameters and vector store statistics are also logged to MLflow for reproducibility.
+3.  **Inference:**
+    *   The **FastAPI** backend loads the optimized ONNX model and ChromaDB vector store.
+    *   **Prometheus** scrapes real-time inference metrics (latency, request count) from the API.
+    *   **Evidently AI** monitors the input data for drift against the training baseline.
+
 ### 1. Computer Vision Model for Plant Diseases
 We trained a **Swin Transformer** (`microsoft/swin-tiny-patch4-window7-224`) on the **PlantVillage** dataset to classify 38 distinct plant disease classes.
 - **Framework:** Hugging Face Transformers & PyTorch
@@ -202,6 +236,38 @@ We built a hybrid retrieval system to ground LLM responses in factual agricultur
     - Combines **BM25 (Sparse)** for exact keyword matching (weight: 0.4).
     - Combines **Chroma (Dense)** for semantic search (weight: 0.6).
     - **Ensemble Retriever:** Merges results to ensure both specific terminology and general context are captured.
+ 
+ ### 🛠️ Step-by-Step RAG Deployment Guide
+To deploy the RAG pipeline locally, follow these steps:
+
+1.  **Prepare the Corpus:**
+    Ensure your scraped data is in `Web_Scrapping_For_Corpus/sample.json`.
+2.  **Run Ingestion:**
+    Execute the ingestion script to chunk text and build the ChromaDB vector store.
+    ```bash
+    python backend/ingest.py
+    ```
+    *This creates the `backend/models/flora_rag_db` directory.*
+3.  **Verify Database:**
+    Check that the vector store is populated.
+    ```bash
+    ls backend/models/flora_rag_db
+    ```
+4.  **Start the API:**
+    Launch the FastAPI server which loads the RAG retriever.
+    ```bash
+    uvicorn backend.app:app --reload
+    ```
+
+## 🧪 MLflow Experiment Tracking
+We use **MLflow** to track all experiments locally.
+
+**Launch the Dashboard:**
+```bash
+# View Model Training Experiments (Port 5000)
+mlflow ui --backend-store-uri ./mlruns/mlruns_training --port 5000
+```
+*Access at: `http://localhost:5000`*
 
 ### 🛠️ Step-by-Step RAG Deployment Guide
 To deploy the RAG pipeline locally, follow these steps:
@@ -240,7 +306,8 @@ mlflow ui --backend-store-uri ./mlruns/mlruns_training --port 5000
 *   **Artifact Store:** Models and vector stores are saved as artifacts within MLflow runs for version control.
 *   **Comparison:** We use the MLflow UI to compare different prompt strategies (Zero-shot vs Few-shot) and CV model checkpoints.
 
-## 📈 Monitoring
+
+## 📈 Monitoring (Prometheus and Grafana + Evidently AI
 Grafana Landing Page:
 <img width="1919" height="1003" alt="image" src="https://github.com/user-attachments/assets/aedbf663-1650-4227-a02b-8fdbf9eff8d5" />
 
@@ -445,4 +512,79 @@ pip-audit
 
 The pipeline is configured to fail builds if critical CVEs are detected, ensuring no vulnerable code reaches production.
 
+### 2. Chat with Expert (LLM)
+Ask follow-up questions based on the diagnosis context.
+
+**Endpoint:** `POST /chat`
+
+```bash
+curl -X POST "http://localhost:8000/chat" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "question": "What fungicides should I use?",
+           "context": "Black rot is caused by..."
+         }'
+```
+
+**Response: for Chat after diagnosing Apple Black Rot**
+<img width="1450" height="950" alt="image" src="https://github.com/user-attachments/assets/886d76c6-e139-42c2-8a01-30424cf1a445" />
+
+
+### 3. System Metrics (Prometheus)
+Get real-time system performance and drift metrics.
+
+**Endpoint:** `GET /metrics`
+
+```bash
+curl -X GET "http://localhost:8000/metrics"
+```
+
+### 🛡️ Vulnerability Scanning
+For runtime security, we integrated mandatory dependency scanning into our CI/CD workflow. This process utilizes **`pip-audit`** to check all project dependencies for known vulnerabilities.
+Furthermore, we also ran npm audit for frontend dependencies.
+
+**Run Locally:**
+```bash
+pip install pip-audit
+pip-audit
+
+cd frontend
+npm audit
+```
+
+**Scan Results: pip audit**
+<img width="239" height="428" alt="image" src="https://github.com/user-attachments/assets/1dde60cd-6f05-4cb5-8a7e-e435d7dacebf" />
+
+<br>
+
+The pipeline is configured to fail builds if critical CVEs are detected, ensuring no vulnerable code reaches production.
+
+
+**Scan Results: npm audit**
+<img width="745" height="332" alt="image" src="https://github.com/user-attachments/assets/e66c4e44-69cb-4639-ad7d-f6b2453d5ef4" />
+
+
+## ❓ FAQ & Troubleshooting
+
+### General Questions
+**Q: What is the primary goal of Fluora Care?**
+> **A:** To provide an offline-capable, privacy-focused tool for farmers to diagnose plant diseases using computer vision and receive treatment advice via a specialized chatbot.
+
+**Q: Why use a local LLM (TinyLlama) instead of OpenAI?**
+> **A:** We prioritize data privacy and cost-efficiency. Running locally ensures no sensitive agricultural data leaves the device and eliminates API usage fees.
+
+**Q: Is an internet connection required?**
+> **A:** No. Once the Docker container is built and models are downloaded, the entire inference pipeline (CV + Chat) runs completely offline.
+
+### Technical Troubleshooting
+
+**Q: The Docker container exits immediately with code 137?**
+> **A:** This usually means Out Of Memory (OOM). Ensure your Docker Desktop has at least **4GB RAM** allocated.
+
+**Q: I see "ONNX Model missing" in the logs?**
+> **A:** You need to download the model artifacts. Run `python backend/download_models.py` (if available) or ensure `backend/models/flora_cv_onnx/` contains `model.onnx`.
+
+**Q: How do I run this on Windows?**
+> **A:** We recommend using **WSL2** or **Git Bash**. The `Makefile` commands might need adjustment for PowerShell.
+ 
 #
