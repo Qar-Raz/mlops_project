@@ -1,0 +1,93 @@
+name: CI — Download models and upload to Azure File Share
+
+on:
+  workflow_dispatch:     # manual trigger in GitHub UI
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+permissions:
+  contents: read
+
+jobs:
+  upload-models:
+    runs-on: ubuntu-latest
+    env:
+      MODELS_LOCAL: ./models    # where downloader writes models on runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps needed for downloader
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run model downloader on runner
+        env:
+          # Provide whichever credentials your download_models.py needs:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          ZIP_NAME: ${{ secrets.ZIP_NAME }}
+          HF_REPO: ${{ secrets.HF_REPO }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+        run: |
+          rm -rf ${{ env.MODELS_LOCAL }}
+          mkdir -p ${{ env.MODELS_LOCAL }}
+          echo "Running download_models.py -> ${MODELS_LOCAL}"
+          python backend/download_models.py --dest "${MODELS_LOCAL}"
+          echo "Downloaded files:"
+          ls -la "${MODELS_LOCAL}" || true
+
+      - name: Login to Azure using service principal
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Ensure storage share exists
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          AZURE_SHARE_NAME="${{ secrets.AZURE_FILE_SHARE_NAME }}"
+          echo "Creating file share (if missing): $AZURE_SHARE_NAME"
+          az storage share create \
+            --name "$AZURE_SHARE_NAME" \
+            --account-name "$AZURE_STORAGE_ACCOUNT" \
+            --account-key "$AZURE_STORAGE_KEY" \
+            || true
+          echo "Listing top-level files in share (for quick check):"
+          az storage file list --share-name "$AZURE_SHARE_NAME" --account-name "$AZURE_STORAGE_ACCOUNT" --account-key "$AZURE_STORAGE_KEY" --output table || true
+
+      - name: Upload models folder to Azure File Share
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          AZURE_SHARE_NAME="${{ secrets.AZURE_FILE_SHARE_NAME }}"
+          echo "Uploading ${MODELS_LOCAL} -> Azure File Share $AZURE_SHARE_NAME"
+          az storage file upload-batch \
+            --source "${MODELS_LOCAL}" \
+            --destination "$AZURE_SHARE_NAME" \
+            --account-name "$AZURE_STORAGE_ACCOUNT" \
+            --account-key "$AZURE_STORAGE_KEY"
+          echo "Upload complete. Sample listing:"
+          az storage file list --share-name "$AZURE_SHARE_NAME" --account-name "$AZURE_STORAGE_ACCOUNT" --account-key "$AZURE_STORAGE_KEY" --output table | sed -n '1,200p' || true
+
+      - name: Cleanup runner (optional)
+        if: always()
+        run: |
+          rm -rf "${MODELS_LOCAL}"
+          echo "Cleaned local models"
