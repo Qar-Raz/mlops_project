@@ -1,14 +1,2 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.2.0+cpu
-torchvision==0.17.0+cpu
-fastapi
-uvicorn
-python-multipart
-python-dotenv
-boto3
-pillow
-numpy<2
-prometheus-fastapi-instrumentator
-evidently==0.4.0
-pandas
-scikit-learn
+# Root requirements.txt
+# This file is empty because the main application has moved to backend/
