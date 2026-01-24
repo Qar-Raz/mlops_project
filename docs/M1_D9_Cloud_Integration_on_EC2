@@ -1,0 +1,194 @@
+## D9: Cloud Integration
+
+### AWS Deployment Setup
+
+### Setting Up Model on AWS S3 and EC2 for Real-Time Prediction
+
+This project is deployed on AWS infrastructure with real-time prediction capabilities.
+
+## Deployment Steps
+
+### 1. AWS S3 Setup
+
+#### Creating S3 Bucket
+
+Created an S3 bucket named `mlopsmodel` in the `eu-north-1` region to store the trained model artifacts for version control and easy access.
+
+<img width="1568" height="306" alt="image" src="https://github.com/user-attachments/assets/f9acd689-5bf7-4b11-86e7-acbbfa39abbc" />
+
+**Bucket Details:**
+- **Name:** mlopsmodel
+- **Region:** Europe (Stockholm) eu-north-1
+- **Creation Date:** October 31, 2025, 01:41:30 (UTC+05:00)
+
+---
+
+### 2. IAM Role Configuration
+
+#### Setting Up EC2 Role with S3 Access
+
+**Step 1: Create IAM Role**
+- Role Name: `EC2-S3-Access-Role`
+- Trusted Entity: EC2 Service
+
+**Step 2: Attach Policies**
+
+Attached the following policy to allow EC2 instance to access S3 bucket:
+<img width="1396" height="478" alt="image" src="https://github.com/user-attachments/assets/345d9f30-2a23-42c1-b3c9-26129e9e5ec0" />
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::mlopsmodel",
+        "arn:aws:s3:::mlopsmodel/*"
+      ]
+    }
+  ]
+}
+```
+
+**Step 3: Attach Role to EC2 Instance**
+- Navigated to EC2 Console
+- Selected the instance
+- Actions → Security → Modify IAM Role
+- Attached `EC2-S3-Access-Role`
+
+---
+
+### 3. EC2 Instance Setup
+
+#### Instance Configuration
+
+![EC2 Instance Running](https://github.com/user-attachments/assets/your-image-1-url)
+
+**Instance Details:**
+- **Instance Type:** t3.micro
+- **Instance ID:** i-0949fcf95473fe069
+- **Region:** eu-north-1a (Europe - Stockholm)
+- **Availability Zone:** eu-north-1a
+- **Status:** Running ✅
+- **Status Checks:** 3/3 checks passed
+- **Public IPv4:** ec2-51-20-114-61
+
+---
+
+#### Security Group Configuration
+
+Created a security group with the following inbound rules to allow traffic:
+
+| Type | Protocol | Port Range | Source | Description |
+|------|----------|------------|--------|-------------|
+| SSH | TCP | 22 | My IP | SSH access for administration |
+| Custom TCP | TCP | 8000 | 0.0.0.0/0 | API access from anywhere |
+| HTTP | TCP | 80 | 0.0.0.0/0 | Optional HTTP access |
+| HTTPS | TCP | 443 | 0.0.0.0/0 | Optional HTTPS access |
+
+**Security Note:** Port 8000 is opened to `0.0.0.0/0` to allow public access to the plant disease prediction API endpoint.
+
+---
+
+### 4. EC2 Environment Setup
+
+#### Connect to EC2 Instance via SSH
+
+```bash
+ssh -i "E:\Downloads\Mlopsproject.pem" ec2-user@ip-172-31-27-88
+```
+
+#### Clone Repository to EC2
+
+```bash
+# Clone the project repository
+git clone https://github.com/yourusername/MLOPS_PROJECT.git
+cd MLOPS_PROJECT
+```
+
+#### Setup Python Virtual Environment
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.in
+```
+
+#### Download Model from S3
+
+```bash
+# Using AWS CLI (automatically configured with IAM role)
+aws s3 cp s3://mlopsmodel/model.pkl ./models/
+```
+
+
+### 6. Running the Application
+
+#### Start Uvicorn Server with Auto-Reload
+<img width="1280" height="659" alt="image" src="https://github.com/user-attachments/assets/6708a6ec-d7d3-46ea-b7f4-08407d5a1ef8" />
+
+
+```bash
+# Navigate to project directory
+cd MLOPS_PROJECT
+
+# Run the application with hot-reload enabled
+python -m uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**Application Logs:**
+
+```
+INFO: Will watch for changes in these directories: ['/home/ec2-user/MLOPS_PROJECT']
+INFO: Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO: Started reloader process [68594] using WatchFiles
+INFO: Started server process [68650]
+INFO: Waiting for application startup.
+INFO: Application startup complete.
+INFO: 111.68.111.143:96960 - "GET /health HTTP/1.1" 200 OK
+```
+
+#### Access the API
+
+- **Health Check:** `http://51.20.114.61:8000/health`
+- **API Endpoint:** `http://51.20.114.61:8000/predict`
+- **API Documentation:** `http://51.20.114.61:8000/docs`
+
+**Health Check Response:** `200 OK` with `{"status":"ok"}`
+
+---
+
+### 7. Continuous Deployment Workflow
+
+#### Local Development to EC2 Deployment
+
+**On Local Machine:**
+
+```bash
+# Make changes to code
+git add .
+git commit -m "Update model/code"
+git push origin main
+```
+
+**On EC2 Instance:**
+
+```bash
+# Pull latest changes
+cd MLOPS_PROJECT
+git pull origin main
+
+# Uvicorn automatically reloads the application
+```
+
+The `--reload` flag ensures that any code changes are automatically detected and the server restarts seamlessly, enabling continuous deployment without manual intervention.
+
+---
